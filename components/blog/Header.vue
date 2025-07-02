@@ -23,15 +23,9 @@ withDefaults(defineProps<Props>(), {
     <h1 class="text-xl dark:text-zinc-300 md:text-3xl lg:text-4xl m-7 font-bold text-center">
       {{ title || '' }}
     </h1>
-    <NuxtImg
-      :src="image || ''"
-      :alt="alt || ''"
-      width="600"
-      class="m-auto rounded-2xl shadow-lg h-32 md:h-72 w-4/6 md:w-4/5 content-center object-cover"
-    />
-    <p
-      class="text-xs sm:text-sm my-3 max-w-xl mx-auto text-center text-zinc-600 dark:text-zinc-400"
-    >
+    <NuxtImg :src="image || ''" :alt="alt || ''" width="600"
+      class="m-auto rounded shadow-lg h-32 md:h-72 w-4/6 md:w-4/5 content-center object-cover" />
+    <p class="text-xs sm:text-sm my-3 max-w-xl mx-auto text-center text-zinc-600 dark:text-zinc-400">
       {{ description }}
     </p>
     <div class="flex w-full justify-center text-xs md:text-base my-8">
@@ -45,9 +39,8 @@ withDefaults(defineProps<Props>(), {
           <template v-for="tag in tags" :key="tag">
             <NuxtLink :to="`/categories/${tag.toLocaleLowerCase()}`">
               <span
-                class="bg-gray-200 dark:bg-slate-900 rounded-md px-2 py-1 font-semibold hover:bg-gray-300 dark:hover:bg-slate-800 transition-colors duration-200"
-                >{{ tag }}</span
-              >
+                class="bg-gray-200 dark:bg-slate-900 rounded px-2 py-1 font-semibold hover:bg-gray-300 dark:hover:bg-slate-800 transition-colors duration-200">{{
+                tag }}</span>
             </NuxtLink>
           </template>
         </div>

@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { makeFirstCharUpper } from '@/utils/helper'
+import { capitalize } from '@/utils/helper'
 
 const { data } = await useAsyncData('all-blog-post-by-category', () =>
   queryCollection('content').all(),
@@ -46,12 +46,7 @@ defineOgImage({
   <main class="container max-w-5xl mx-auto text-zinc-600">
     <CategoryHero />
     <div class="flex flex-wrap px-6 mt-12 gap-3">
-      <CategoryCard
-        v-for="topic in allTags"
-        :key="topic[0]"
-        :title="makeFirstCharUpper(topic[0])"
-        :count="topic[1]"
-      />
+      <CategoryCard v-for="topic in allTags" :key="topic[0]" :title="capitalize(topic[0])" :count="topic[1]" />
     </div>
   </main>
 </template>

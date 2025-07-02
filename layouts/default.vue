@@ -1,5 +1,5 @@
 <template>
-  <div class="gd-container font-spacegrotesk">
+  <div class="gd-container font-sans">
     <header class="fixed w-full bg-[#F1F2F4] dark:bg-slate-950 z-10">
       <MainHeader />
     </header>
@@ -7,7 +7,7 @@
       <div class="p-9" />
       <slot />
     </main>
-    <footer>
+    <footer class="mt-8">
       <MainFooter />
     </footer>
   </div>

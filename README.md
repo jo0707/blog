@@ -1,10 +1,14 @@
+<h1 align="center">Nuxt Blog A Personal Blog Site</h1>
+
 <p align="center">
-  <a href="https://blog.nurriyad.com" target="_blank">
-    <img  src="./assets/images/dark.png">
+  <a href="https://joshuapaltisinaga.com" target="_blank">
+    <img src="./assets/images/dark.png">
   </a>
 </p>
 
-<h1 align="center">Nuxt Blog A Personal Blog Site</h1>
+<p align="center">
+  <strong>Big thanks to <a href="https://github.com/nurRiyad" target="_blank">@nurRiyad</a> for the repo template</strong>
+</p>
 
 ### Built with
 
@@ -37,7 +41,7 @@ Nuxt Blog built with [Nuxt3](https://nuxt.com), [Nuxt-Content2](https://content.
 ## Preview
 
 <p align="center">
-  <a href="https://blog.nurriyad.com" target="_blank">
+  <a href="https://joshuapaltisinaga.com" target="_blank">
     <img width="1090" src="./assets/images/preview1.png">
     <img width="1090" src="./assets/images/preview2.png">
     <img width="1090" src="./assets/images/preview3.png">
@@ -49,25 +53,24 @@ Nuxt Blog built with [Nuxt3](https://nuxt.com), [Nuxt-Content2](https://content.
 
 ## Demo
 
-https://blog.nurriyad.com
+https://joshuapaltisinaga.com
 
 > Hosted on [Vercel](https://vercel.com/): `npm run build`
 
 ## Build Setup
 
-**Requires Node.js 16+**
+**Bun Preferred**
 
 ```bash
 # install dependencies
-yarn install
+bun install
 
 # serve in dev mode, with hot reload at localhost:5173
-yarn run dev
+bun run dev
 
 # build for production
-yarn run build
+bun run build
 
 # serve in production mode
-yarn run  preview
-
+bun run preview
 ```

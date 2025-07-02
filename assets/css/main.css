@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@theme {
+    --font-sans: 'Figtree', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    --color-white: var("#f1f2f4");
+
+    --ui-radius: 0.25rem;
+  }

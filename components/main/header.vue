@@ -13,11 +13,11 @@ function isActive(path: string) {
 </script>
 
 <template>
-  <div class="py-5 border-b dark:border-gray-800 font-semibold">
+  <div class="py-5 border-b border-gray-300 dark:border-gray-800 font-semibold">
     <div class="flex px-6 container max-w-5xl justify-between mx-auto items-baseline">
       <ul class="flex items-baseline space-x-5">
         <li class="text-base sm:text-2xl font-bold">
-          <NuxtLink to="/" :class="{ underline: $route.path === '/' }">
+          <NuxtLink to="/">
             {{ navbarData.homeTitle }}
           </NuxtLink>
         </li>
@@ -32,32 +32,18 @@ function isActive(path: string) {
           </NuxtLink>
         </li>
         <li title="About Me">
-          <NuxtLink
-            to="/about"
-            aria-label="About me"
-            :class="{ underline: $route.path === '/about' }"
-          >
+          <NuxtLink to="/about" aria-label="About me" :class="{ underline: $route.path === '/about' }">
             About
           </NuxtLink>
         </li>
         <li>
           <ClientOnly>
-            <button
-              v-if="colorMode.value === 'light'"
-              name="light-mode"
-              title="Light"
-              class="hover:scale-110 transition-all ease-out hover:cursor-pointer"
-              @click="onClick('dark')"
-            >
+            <button v-if="colorMode.value === 'light'" name="light-mode" title="Light"
+              class="hover:scale-110 transition-all ease-out hover:cursor-pointer" @click="onClick('dark')">
               <Icon name="icon-park:moon" size="20" />
             </button>
-            <button
-              v-if="colorMode.value === 'dark'"
-              name="dark-mode"
-              title="Dark"
-              class="hover:scale-110 transition-all ease-out hover:cursor-pointer"
-              @click="onClick('light')"
-            >
+            <button v-if="colorMode.value === 'dark'" name="dark-mode" title="Dark"
+              class="hover:scale-110 transition-all ease-out hover:cursor-pointer" @click="onClick('light')">
               <Icon name="noto:sun" size="20" />
             </button>
             <template #fallback>
