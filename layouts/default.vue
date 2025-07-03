@@ -1,13 +1,13 @@
 <template>
   <div class="gd-container font-sans">
-    <header class="fixed w-full bg-[#F1F2F4] dark:bg-slate-950 z-10">
+    <header class="fixed w-full dark:bg-slate-950 z-10">
       <MainHeader />
     </header>
     <main>
-      <div class="p-9" />
+      <div class="p-9" /> 
       <slot />
     </main>
-    <footer class="mt-8">
+    <footer class="mt-12">
       <MainFooter />
     </footer>
   </div>

@@ -11,7 +11,7 @@ useHead({
 
 <template>
   <UApp>
-    <div class="bg-[#F1F2F4] dark:text-zinc-300 dark:bg-slate-950 font-[Figtree]">
+    <div class="dark:text-slate-100 dark:bg-slate-900 font-[Figtree]">
       <NuxtLoadingIndicator />
       <NuxtLayout>
         <NuxtPage />

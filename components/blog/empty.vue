@@ -1,5 +1,5 @@
 <template>
-  <article class="group border dark:border-gray-800 m-2 rounded overflow-hidden shadow-lg text-zinc-700">
+  <article class="group border dark:border-gray-800 m-2 rounded overflow-hidden shadow text-zinc-700">
     <NuxtLink to="/">
       <div
         class="lg:h-48 md:h-36 w-full object-cover object-center group-hover:scale-[1.05] transition-all duration-500">
@@ -7,7 +7,7 @@
       </div>
       <div class="p-5">
         <h2
-          class="text-3xl font-semibold text-black dark:text-zinc-300 pb-1 group-hover:text-sky-700 dark:group-hover:text-sky-400">
+          class="text-3xl font-semibold text-black dark:text-slate-100 pb-1 group-hover:text-sky-700 dark:group-hover:text-sky-400">
           No Post Available
         </h2>
 

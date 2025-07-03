@@ -1,52 +1,10 @@
 <script lang="ts" setup>
-import { capitalize } from '@/utils/helper'
-
-const { data } = await useAsyncData('all-blog-post-by-category', () =>
-  queryCollection('content').all(),
-)
-
-const allTags = new Map()
-
-data.value?.forEach((blog) => {
-  const tags: Array<string> = (blog.meta.tags as string[]) || []
-  tags.forEach((tag) => {
-    if (allTags.has(tag)) {
-      const cnt = allTags.get(tag)
-      allTags.set(tag, cnt + 1)
-    } else {
-      allTags.set(tag, 1)
-    }
-  })
-})
-
-useHead({
-  title: 'Categories',
-  meta: [
-    {
-      name: 'description',
-      content:
-        'Below All the topics are listed on which either I have written a blog or will write a blog in near future.',
-    },
-  ],
-})
-
-// Generate OG Image
-const siteData = useSiteConfig()
-defineOgImage({
-  props: {
-    title: 'Categories',
-    description:
-      'Below All the topics are listed on which either I have written a blog or will write a blog in near future.',
-    siteName: siteData.url,
-  },
-})
+// Redirect to the new blog page with category filtering
+await navigateTo('/blogs', { replace: true })
 </script>
 
 <template>
-  <main class="container max-w-5xl mx-auto text-zinc-600">
-    <CategoryHero />
-    <div class="flex flex-wrap px-6 mt-12 gap-3">
-      <CategoryCard v-for="topic in allTags" :key="topic[0]" :title="capitalize(topic[0])" :count="topic[1]" />
-    </div>
-  </main>
+  <div>
+    <p>Redirecting to blog archive...</p>
+  </div>
 </template>

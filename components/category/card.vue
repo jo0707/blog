@@ -35,9 +35,8 @@ const picAColor = ref(`${color.at(getRandomInt(0, 8))}`)
 
 <template>
   <div
-    class="text-[#F1F2F4] px-5 py-3 rounded hover:underline rand-bg-color hover:scale-[1.05] transition-all duration-500"
-  >
-    <NuxtLink :to="`/categories/${title.toLocaleLowerCase()}`" class="text-lg font-extrabold">
+    class="text-[#F1F2F4] px-5 py-3 rounded hover:underline rand-bg-color hover:scale-[1.05] transition-all duration-500">
+    <NuxtLink :to="`/blogs?category=${title.toLocaleLowerCase()}`" class="text-lg font-extrabold">
       <h1>#{{ title }}({{ count }})</h1>
     </NuxtLink>
   </div>

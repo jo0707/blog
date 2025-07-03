@@ -7,6 +7,7 @@ const { data } = await useAsyncData('all-blog-post', () => queryCollection('cont
 const elementPerPage = ref(5)
 const pageNumber = ref(1)
 const searchTest = ref('')
+const selectedCategory = ref('')
 
 const formattedData = computed(() => {
   return (
@@ -29,18 +30,40 @@ const formattedData = computed(() => {
 
 const fuse = computed(() => {
   return new Fuse(formattedData.value, {
-    keys: ['title', 'description'],
+    keys: ['title', 'description', 'tags'],
     threshold: 0.4,
     includeScore: false,
   })
 })
 
-const searchData = computed(() => {
-  if (!searchTest.value.trim()) {
+// Get all unique categories/tags
+const allCategories = computed(() => {
+  const tags = formattedData.value.flatMap(post => post.tags || [])
+  return [...new Set(tags)].sort()
+})
+
+// Filter data by category first, then search
+const categoryFilteredData = computed(() => {
+  if (!selectedCategory.value) {
     return formattedData.value
   }
+  return formattedData.value.filter(post =>
+    post.tags && post.tags.includes(selectedCategory.value)
+  )
+})
 
-  const results = fuse.value.search(searchTest.value)
+const searchData = computed(() => {
+  if (!searchTest.value.trim()) {
+    return categoryFilteredData.value
+  }
+
+  const fuse = new Fuse(categoryFilteredData.value, {
+    keys: ['title', 'description', 'tags'],
+    threshold: 0.4,
+    includeScore: false,
+  })
+
+  const results = fuse.search(searchTest.value)
   return results.map((result) => result.item)
 })
 
@@ -64,12 +87,28 @@ function onNextPageClick() {
   if (pageNumber.value < totalPage.value) pageNumber.value += 1
 }
 
+function filterByCategory(category: string) {
+  selectedCategory.value = category
+  pageNumber.value = 1 // Reset to first page when filtering
+}
+
+function clearFilters() {
+  selectedCategory.value = ''
+  searchTest.value = ''
+  pageNumber.value = 1
+}
+
+// Reset page number when search changes
+watch([searchTest, selectedCategory], () => {
+  pageNumber.value = 1
+})
+
 useHead({
-  title: 'Archive',
+  title: 'Blog Archive',
   meta: [
     {
       name: 'description',
-      content: 'Here you will find all the blog posts I have written & published on this site.',
+      content: 'Browse all blog posts by category or search through our complete archive of articles.',
     },
   ],
 })
@@ -78,8 +117,8 @@ useHead({
 const siteData = useSiteConfig()
 defineOgImage({
   props: {
-    title: 'Archive',
-    description: 'Here you will find all the blog posts I have written & published on this site.',
+    title: 'Blog Archive',
+    description: 'Browse all blog posts by category or search through our complete archive of articles.',
     siteName: siteData.url,
   },
 })
@@ -88,12 +127,48 @@ defineOgImage({
 <template>
   <main class="container max-w-5xl mx-auto text-zinc-600">
     <ArchiveHero />
-
-    <div class="px-6">
-      <input v-model="searchTest" placeholder="Search" type="text"
-        class="block w-full bg-[#F1F2F4] dark:bg-slate-900 dark:placeholder-zinc-500 text-zinc-300 rounded border-gray-300 dark:border-gray-800 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" />
+    <div class="px-4">
+      <UInput v-model="searchTest" placeholder="Search" size="lg" icon="material-symbols:search" class="w-full" />
     </div>
 
+    <!-- Category Filter -->
+    <div class="px-4 mt-6">
+      <div class="flex flex-wrap items-center gap-3 mb-4">
+        <h3 class="text-lg font-semibold text-zinc-800 dark:text-slate-100">Filter by Category:</h3>
+        <UButton @click="clearFilters" variant="soft" color="neutral" size="xs">
+          Clear All
+        </UButton>
+      </div>
+
+      <div class="flex flex-wrap gap-2">
+        <UButton :variant="selectedCategory === '' ? 'solid' : 'soft'" color="neutral" size="sm"
+          @click="filterByCategory('')">
+          All Posts ({{ formattedData.length }})
+        </UButton>
+
+        <UButton v-for="category in allCategories" :key="category"
+          :variant="selectedCategory === category ? 'solid' : 'soft'" color="neutral" size="sm"
+          @click="filterByCategory(category)">
+          {{ category }} ({{formattedData.filter(post => post.tags?.includes(category)).length}})
+        </UButton>
+      </div>
+
+      <!-- Active filters display -->
+      <div v-if="selectedCategory || searchTest" class="mt-4 p-3 bg-zinc-50 dark:bg-zinc-800 rounded-lg">
+        <div class="flex items-center gap-2 text-sm text-zinc-600 dark:text-slate-400">
+          <span>Active filters:</span>
+          <span v-if="selectedCategory"
+            class="px-2 py-1 bg-sky-100 dark:bg-sky-900 text-sky-800 dark:text-sky-200 rounded">
+            Category: {{ selectedCategory }}
+          </span>
+          <span v-if="searchTest"
+            class="px-2 py-1 bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 rounded">
+            Search: "{{ searchTest }}"
+          </span>
+          <span class="ml-2 font-medium">{{ searchData.length }} post(s) found</span>
+        </div>
+      </div>
+    </div>
     <div v-auto-animate class="space-y-5 my-5 px-4">
       <template v-for="post in paginatedData" :key="post.title">
         <ArchiveCard :path="post.path" :title="post.title" :date="post.date" :description="post.description"
@@ -104,14 +179,17 @@ defineOgImage({
     </div>
 
     <div class="flex justify-center items-center space-x-6">
-      <button :disabled="pageNumber <= 1" @click="onPreviousPageClick">
-        <Icon name="mdi:code-less-than" size="30" :class="{ 'text-sky-700 dark:text-sky-400': pageNumber > 1 }" />
-      </button>
-      <p>{{ pageNumber }} / {{ totalPage }}</p>
-      <button :disabled="pageNumber >= totalPage" @click="onNextPageClick">
-        <Icon name="mdi:code-greater-than" size="30"
-          :class="{ 'text-sky-700 dark:text-sky-400': pageNumber < totalPage }" />
-      </button>
+      <UButton :disabled="pageNumber <= 1" @click="onPreviousPageClick" variant="soft" color="neutral" size="sm"
+        icon="i-mdi-chevron-left">
+        Previous
+      </UButton>
+
+      <p class="text-sm font-medium">{{ pageNumber }} / {{ totalPage }}</p>
+
+      <UButton :disabled="pageNumber >= totalPage" @click="onNextPageClick" variant="soft" color="neutral" size="sm"
+        trailing-icon="i-mdi-chevron-right">
+        Next
+      </UButton>
     </div>
   </main>
 </template>

@@ -1,44 +1,22 @@
-<script setup lang="ts">
-const route = useRoute()
-
-const path = computed(() => route.fullPath.replace('/', ''))
-</script>
-
 <template>
-  <div class="py-8 border-t border-gray-300 dark:border-gray-800 mt-5 text-zinc-700 dark:text-zinc-300">
+  <div class="text-zinc-700 dark:text-slate-100">
     <div class="px-6 container max-w-5xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-3">
-        <FooterSite v-if="path === 'about'" />
-        <FooterDeveloper v-else />
-        <FooterLink />
-        <FooterConnect />
-      </div>
-
-      <div class="border-t dark:border-gray-800 mt-5 text-center p-2">
-        © 2020-2024 No Right is reserved. Who cares 🤷‍♂️? It's
-        <a href="https://github.com/jo0707/blog" target="_blank" rel="nofollow" class="underline"
-          >open source</a
-        >
-        anyway.
-
-        <a href="/rss.xml" aria-label="Website RSS Feed">
-          <span class="px-3"><Icon name="bi:rss-fill" /></span
-        ></a>
+      <div class="border-t border-gray-400 dark:border-gray-800 mt-5 text-center text-sm py-6">
+        <h4 class="font-semibold text-base">Joshua Palti Sinaga</h4>
+        <h5>Writing bugs in both frontend and backend since 2019</h5>
+        © 2020-2024 | Powered by
+        <a href="https://github.com/nurRiyad/nuxt-blog" target="_blank" rel="nofollow" class="underline">nuxt-blog</a>
+        <div class="flex place-content-center">
+          <UButton class="p-1" href="https://github.com/jo0707" icon="mdi:github-box" target="_blank"
+            aria-label="GitHub" color="neutral" variant="ghost" />
+          <UButton class="p-1" href="https://linkedin.com/in/joshuapaltisinaga" icon="mdi:linkedin" target="_blank"
+            aria-label="LinkedIn" color="neutral" variant="ghost" />
+          <UButton class="p-1" href="https://itsjo.works" icon="mdi:web-box" target="_blank" aria-label="My Site"
+            color="neutral" variant="ghost" />
+          <UButton class="p-1" href="/rss.xml" icon="mdi:rss-box" target="_blank" aria-label="RSS Feed" color="neutral"
+            variant="ghost" />
+        </div>
       </div>
     </div>
   </div>
 </template>
-
-<style>
-/* we will explain what these classes do next! */
-.v-enter-active,
-.v-leave-active {
-  transition: all 0.4s;
-}
-
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-  filter: blur(1rem);
-}
-</style>

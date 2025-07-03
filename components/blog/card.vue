@@ -25,14 +25,13 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <UCard
-    class="group" :ui="{body: 'p-0 sm:p-0'}">
+  <UCard class="group" :ui="{ body: 'p-0 sm:p-0' }">
     <NuxtLink :to="path">
       <NuxtImg
-        class="lg:h-48 md:h-36 w-full object-cover object-center rounded-t shadow-lg group-hover:scale-[1.02] transition-all duration-500"
+        class="lg:h-48 md:h-36 w-full object-cover object-center rounded-t shadow group-hover:scale-[1.02] transition-all duration-500"
         width="300" :src="image" :alt="alt" />
       <div class="px-3 pb-4">
-        <div class="text-black dark:text-zinc-300 pt-3 pb-2">
+        <div class="text-black dark:text-slate-100 pt-3 pb-2">
           <div class="flex items-center">
             <LogoDate />
             {{ date }}
@@ -47,7 +46,7 @@ withDefaults(defineProps<Props>(), {
           </div>
         </div>
         <h2
-          class="text-xl font-semibold text-black dark:text-zinc-300 pb-1 group-hover:text-sky-700 dark:group-hover:text-sky-400">
+          class="text-xl font-semibold text-black dark:text-slate-100 pb-1 group-hover:text-sky-700 dark:group-hover:text-sky-400">
           {{ title }}
         </h2>
         <p class="text-ellipsis line-clamp-2 text-base">

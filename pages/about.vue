@@ -20,51 +20,57 @@ defineOgImageComponent('About', {
 </script>
 
 <template>
-  <div class="py-5">
-    <div class="sm:grid grid-cols-8 px-6 py-5 sm:py-9 gap-5 container max-w-5xl mx-auto">
-      <div class="col-span-5 max-w-md">
-        <div class="flex justify-between">
-          <div>
-            <h1 class="text-xl sm:text-4xl pb-2 font-bold">
-              {{ aboutPage.title }}
-            </h1>
+  <main class="container max-w-5xl mx-auto text-zinc-600">
+    <div class="container mx-auto h-[32rem]">
+      <div class="grid grid-cols-1 sm:grid-cols-2 items-center place-items-center h-full">
+        <!-- Left side - Title -->
+        <div class="px-6">
+          <h2 class="text-black dark:text-slate-100 font-semibold leading-tight text-4xl md:text-5xl w-full">
+            {{ aboutPage.title }}</h2>
+          <MainRunningText :text="aboutPage.description" :speed="50" class="dark:text-slate-100 text-lg">
+          </MainRunningText>
+        </div>
 
-            <div class="my-3 space-x-2 md:space-x-3 pb-10">
-              <NuxtLink :to="socialLinks.githubLink" target="_blank"
-                class="px-2 py-1 lg:px-3 lg:py-2 bg-gray-300 text-gray-800 rounded dark:bg-slate-700 dark:text-[#F1F2F4]"
-                aria-label="Github">
-                <Icon name="fa:github" size="1em" />
-              </NuxtLink>
-              <NuxtLink :to="socialLinks.linkedinLink" target="_blank"
-                class="px-2 py-1 lg:px-3 lg:py-2 bg-gray-300 text-gray-800 rounded dark:bg-slate-700 dark:text-[#F1F2F4]"
-                aria-label="LinkedIn">
-                <Icon name="fa:linkedin-square" size="1em" />
-              </NuxtLink>
-              <NuxtLink :to="socialLinks.twitterLink" target="_blank"
-                class="px-2 py-1 lg:px-3 lg:py-2 bg-gray-300 text-gray-800 rounded dark:bg-slate-700 dark:text-[#F1F2F4]"
-                aria-label="Twitter">
-                <Icon name="fa:twitter-square" size="1em" />
-              </NuxtLink>
-              <NuxtLink v-if="socialLinks.stackoverflowLink" :to="socialLinks.stackoverflowLink" target="_blank"
-                class="px-2 py-1 lg:px-3 lg:py-2 bg-gray-300 text-gray-800 rounded dark:bg-slate-700 dark:text-[#F1F2F4]"
-                aria-label="StackOverflow">
-                <Icon name="fa:stack-overflow" size="1em" />
-              </NuxtLink>
+        <!-- Right side - Details -->
+        <div class="px-6 space-y-6">
+          <div>
+            <h3 class="text-2xl font-bold text-zinc-800 dark:text-slate-100 mb-3">About Me</h3>
+            <p class="dark:text-slate-100 text-base leading-relaxed">
+              {{ aboutPage.aboutMe }}
+            </p>
+          </div>
+
+          <div>
+            <h3 class="text-2xl font-bold text-zinc-800 dark:text-slate-100 mb-3">What I Do</h3>
+            <p class="dark:text-slate-100 text-base leading-relaxed">
+              {{ footerData.authorInterest }}
+            </p>
+          </div>
+
+          <!-- Footer Links -->
+          <div>
+            <h3 class="text-2xl font-bold text-zinc-800 dark:text-slate-100 mb-3">Connect</h3>
+            <div class="flex flex-wrap gap-3">
+              <UButton href="https://github.com/jo0707" icon="mdi:github-box" target="_blank" aria-label="GitHub"
+                color="neutral" variant="soft" size="sm">
+                GitHub
+              </UButton>
+              <UButton href="https://linkedin.com/in/joshuapaltisinaga" icon="mdi:linkedin" target="_blank"
+                aria-label="LinkedIn" color="neutral" variant="soft" size="sm">
+                LinkedIn
+              </UButton>
+              <UButton href="https://itsjo.works" icon="mdi:web-box" target="_blank" aria-label="My Site"
+                color="neutral" variant="soft" size="sm">
+                Portfolio
+              </UButton>
+              <UButton href="/rss.xml" icon="mdi:rss-box" target="_blank" aria-label="RSS Feed" color="neutral"
+                variant="soft" size="sm">
+                RSS
+              </UButton>
             </div>
           </div>
-          <div class="sm:hidden block col-span-3 pb-5 dark:text-[#F1F2F4]">
-            <NuxtImg src="/joshua.jpg" width="125" height="115" quality="50" class="rounded" />
-          </div>
         </div>
-        <h3 class=" text-base sm:text-3xl font-semibold pb-7 sm:pb-12">
-          {{ aboutPage.description }}
-        </h3>
-
-        <p>{{ aboutPage.aboutMe }}</p>
-      </div>
-      <div class="hidden sm:block col-span-3">
-        <NuxtImg src="/joshua.jpg" width="450" height="500" quality="50" class="rounded" />
       </div>
     </div>
-  </div>
+  </main>
 </template>
