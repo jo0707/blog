@@ -52,6 +52,13 @@ export default defineNuxtConfig({
     },
   },
 
+  ogImage: {
+    zeroRuntime: true,
+    defaults: {
+      cacheMaxAgeSeconds: 60,
+    }
+  },
+
   colorMode: {
     classSuffix: "",
     preference: "dark",

@@ -15,7 +15,7 @@ defineOgImageComponent('About', {
   headline: 'Greetings 👋',
   title: navbarData.homeTitle,
   description: 'I am Joshua Palti Sinaga, a software engineer and open source enthusiast.',
-  link: '/joshua.jpg',
+  link: '/profile.jpg',
 })
 </script>
 
