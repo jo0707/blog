@@ -60,12 +60,12 @@ export default defineNuxtConfig({
 
   content: {
     experimental: { nativeSqlite: true },
-    database: {
-      type: "postgres",
-      url:
-        process.env.DATABASE_URL ||
-        "postgres://user:password@localhost:5432/mydb",
-    },
+    // database: {
+    //   type: "postgres",
+    //   url:
+    //     process.env.DATABASE_URL ||
+    //     "postgres://user:password@localhost:5432/mydb",
+    // },
     build: {
       markdown: {
         highlight: {
