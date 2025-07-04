@@ -137,7 +137,7 @@ defineOgImageComponent('Test', {
         <BlogHeader :title="data.title" :image="data.image" :alt="data.alt" :date="formatDate(data.date)"
           :description="data.description" :tags="data.tags" />
         <div
-          class="mt-4 prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg prose-h1:no-underline max-w-none prose-zinc dark:prose-invert prose-img:rounded-lg prose-headings:mb-4 text-justify">
+          class="mt-4 prose leading-relaxed prose-pre:max-w-xs max-lg:m-4 sm:prose-pre:max-w-full prose-base sm:prose-base md:prose-lg prose-h1:no-underline max-w-none prose-slate dark:prose-invert prose-img:rounded-lg prose-headings:mb-4 text-justify">
           <ContentRenderer v-if="articles" :value="articles">
             <template #empty>
               <p>No content found.</p>

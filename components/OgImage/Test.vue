@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
   headline: 'headline',
   link: '',
 })
-
+  
 const formattedTitle = computed(() =>
   props.title.length > 70 ? `${props.title.slice(0, 60)}...` : props.title,
 )

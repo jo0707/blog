@@ -5,11 +5,11 @@ export const navbarData = {
 export const footerData = {
   author: "Joshua Palti Sinaga",
   aboutAuthor:
-    "Hi! I am Joshua, a Tech enthusiast, problem solver and software engineer.",
+    "Hi! I am Joshua, a software developer that focuses on web and mobile platforms",
   authorInterest:
     "I have a fair amount of knowledge of Javascript, Typescript, VueJs, and Nuxt. If you have an interesting idea, either open source or paid let's connect.",
   aboutTheSite:
-    "This is a personal blog site built with Nuxt3, TailwindCSS, NuxtContent, Nuxt Icon. Currently it's deployed in Vercel.",
+    "This is a personal blog site built with Nuxt3, Nuxt UI, TailwindCSS, NuxtContent, Nuxt Icon. Currently it's deployed in Vercel.",
 };
 
 export const homePage = {
@@ -32,20 +32,20 @@ export const categoryPage = {
 
 export const aboutPage = {
   title: "Joshua Palti Sinaga",
-  description: "Software Engineer, Problem Solver, Web Enthusiast.",
+  description: "A software developer that focuses on web and mobile platforms",
   aboutMe:
     "I enjoy finding creative solutions to everyday challenges and turning them into opportunities for innovation. I love building applications that not only function smoothly but also feel natural and easy to use. While I mainly work as a fullstack developer, I’m also passionate about exploring AI and IoT, combining new technologies to create meaningful and forward thinking solutions.",
 };
 
 export const seoData = {
   title: `Joshua's Blog | Joshua Palti Sinaga Blog`,
-  ogTitle: `Let's learn Javascript, Typescript, Vue, Nuxt, & Problem Solving - Joshua Palti Sinaga Blog | Joshua's Blog`,
-  description: `Hi I am Joshua Palti Sinaga. A Software Engineer with experience in software development. - Joshua Palti Sinaga Blog | Joshua's Blog`,
-  twitterDescription: `Joshua's Blog, where I play around with Nuxt, Vue, and more and showcase my blog, resources, etc - Joshua Palti Sinaga Blog | Joshua's Blog`,
+  ogTitle: `Welcome To Joshua\'s Blog Site. Read all about technology, web development, and more! | Joshua Palti Sinaga's Blog`,
+  description: `Welcome To Joshua\'s Blog Site. Read all about technology, web development, and more! | Joshua Palti Sinaga's Blog`,
+  twitterDescription: `Welcome To Joshua\'s Blog Site. Read all about technology, web development, and more! | Joshua Palti Sinaga's Blog`,
   image:
-    "https://res.cloudinary.com/dmecmyphj/image/upload/v1673548905/nuxt-blog/cover_ntgs6u.webp",
-  mySite: "https://blog-nurriyad.vercel.app",
-  twitterHandle: "@qdnvubp",
+    "/img/profile.webp",
+  mySite: "https://blog.itsjo.works/",
+  twitterHandle: "@jooeyØ7Ø7",
   mailAddress: "josua123690707@gmail.com",
 };
 
