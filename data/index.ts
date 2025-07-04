@@ -42,8 +42,7 @@ export const seoData = {
   ogTitle: `Welcome To Joshua\'s Blog Site. Read all about technology, web development, and more! | Joshua Palti Sinaga's Blog`,
   description: `Welcome To Joshua\'s Blog Site. Read all about technology, web development, and more! | Joshua Palti Sinaga's Blog`,
   twitterDescription: `Welcome To Joshua\'s Blog Site. Read all about technology, web development, and more! | Joshua Palti Sinaga's Blog`,
-  image:
-    "/img/profile.webp",
+  image: "/img/profile.jpg",
   mySite: "https://blog.itsjo.works/",
   twitterHandle: "@jooeyØ7Ø7",
   mailAddress: "josua123690707@gmail.com",

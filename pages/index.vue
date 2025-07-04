@@ -17,7 +17,7 @@ defineOgImageComponent('About', {
   headline: 'Hi 👋',
   title: navbarData.homeTitle,
   description: 'Welcome To Joshua\'s Blog Site. Read all about technology, web development, and more!',
-  link: '/profile.webp',
+  link: '/profile.jpg',
 })
 </script>
 

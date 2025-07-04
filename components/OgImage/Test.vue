@@ -12,7 +12,7 @@ const props = withDefaults(defineProps<Props>(), {
   headline: 'headline',
   link: '',
 })
-  
+
 const formattedTitle = computed(() =>
   props.title.length > 70 ? `${props.title.slice(0, 60)}...` : props.title,
 )
@@ -21,7 +21,7 @@ const formattedDescription = computed(() =>
 )
 const formattedLink = computed(() => {
   if (props.link.endsWith('jpg') || props.link.endsWith('png')) return props.link
-  else return '/profile.webp'
+  else return '/profile.jpg'
 })
 </script>
 
