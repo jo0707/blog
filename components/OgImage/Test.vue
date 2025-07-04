@@ -21,7 +21,7 @@ const formattedDescription = computed(() =>
 )
 const formattedLink = computed(() => {
   if (props.link.endsWith('jpg') || props.link.endsWith('png')) return props.link
-  else return '/blogs-img/blog.jpg'
+  else return '/profile.webp'
 })
 </script>
 
