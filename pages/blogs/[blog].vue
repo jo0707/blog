@@ -79,7 +79,17 @@ useHead({
   ],
 })
 
-console.log(articles.value)
+
+// TOC sidebar state
+const tocOpen = ref(true)
+
+const toggleToc = () => {
+  tocOpen.value = !tocOpen.value
+}
+
+// Provide TOC state to child components
+provide('tocOpen', tocOpen)
+provide('toggleToc', toggleToc)
 
 // Generate OG Image
 defineOgImageComponent('Test', {
@@ -91,38 +101,69 @@ defineOgImageComponent('Test', {
 </script>
 
 <template>
-  <div class="px-6 container max-w-5xl mx-auto sm:grid grid-cols-12 gap-x-12">
-    <div class="col-span-12 lg:col-span-9">
-      <BlogHeader
-        :title="data.title"
-        :image="data.image"
-        :alt="data.alt"
-        :date="data.date"
-        :description="data.description"
-        :tags="data.tags"
-      />
-      <div
-        class="prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg prose-h1:no-underline max-w-5xl mx-auto prose-zinc dark:prose-invert prose-img:rounded-lg"
-      >
-        <ContentRenderer v-if="articles" :value="articles">
-          <template #empty>
-            <p>No content found.</p>
-          </template>
-        </ContentRenderer>
-      </div>
-    </div>
-    <BlogToc />
+  <div class="blog-layout">
+    <!-- TOC Sidebar -->
+    <BlogToc :articles="articles" />
 
-    <div class="flex flex-row flex-wrap md:flex-nowrap mt-10 gap-2">
-      <SocialShare
-        v-for="network in ['facebook', 'twitter', 'linkedin', 'email']"
-        :key="network"
-        :network="network"
-        :styled="true"
-        :label="true"
-        class="p-1"
-        aria-label="Share with {network}"
-      />
-    </div>
+    <!-- TOC Toggle Button -->
+    <UButton @click="toggleToc" icon="i-heroicons-bars-3" size="lg" variant="outline" color="neutral"
+      class="fixed top-22 right-4 z-40 shadow-lg backdrop-blur-sm transition-all duration-300"
+      :class="{ 'opacity-0 pointer-events-none': tocOpen }" aria-label="Toggle Table of Contents" />
+
+    <!-- Main Content -->
+    <main class="main-content min-h-screen">
+      <div class="content-wrapper max-w-5xl mx-auto px-6 py-8">
+        <BlogHeader :title="data.title" :image="data.image" :alt="data.alt" :date="formatDate(data.date)"
+          :description="data.description" :tags="data.tags" />
+        <div
+          class="mt-4 prose prose-pre:max-w-xs sm:prose-pre:max-w-full prose-sm sm:prose-base md:prose-lg prose-h1:no-underline max-w-none prose-zinc dark:prose-invert prose-img:rounded-lg prose-headings:mb-4 text-justify">
+          <ContentRenderer v-if="articles" :value="articles">
+            <template #empty>
+              <p>No content found.</p>
+            </template>
+          </ContentRenderer>
+        </div>
+
+        <div class="flex flex-row flex-wrap md:flex-nowrap mt-24 gap-2 justify-center">
+          <SocialShare v-for="network in ['facebook', 'twitter', 'linkedin', 'email']" :key="network" :network="network"
+            :styled="true" :label="true" class="p-1" aria-label="Share with {network}" />
+        </div>
+      </div>
+    </main>
+
+    <!-- Overlay -->
+    <div v-if="tocOpen" @click="tocOpen = false" class="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"></div>
   </div>
 </template>
+
+<style scoped>
+.blog-layout {
+  position: relative;
+}
+
+.main-content {
+  transition: margin-right 0.3s ease;
+}
+
+.content-wrapper {
+  padding-top: 2rem;
+}
+
+/* Responsive adjustments */
+@media (min-width: 1024px) {
+  .main-content {
+    margin-right: 0;
+  }
+
+  .content-wrapper {
+    max-width: 800px;
+  }
+}
+
+@media (max-width: 768px) {
+  .content-wrapper {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+</style>

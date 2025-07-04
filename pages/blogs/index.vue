@@ -19,8 +19,8 @@ const formattedData = computed(() => {
         description: articles.description || 'no-description available',
         image: meta.image || '/not-found.jpg',
         alt: meta.alt || 'no alter data available',
-        ogImage: meta.ogImage || '/not-found.jpg',
-        date: meta.date || 'not-date-available',
+        ogImage: meta.ogImage || '/not-found.jpg',  
+        date: (new Date(meta.date)).toLocaleDateString() || 'unknown-date',
         tags: meta.tags || [],
         published: meta.published || false,
       }
