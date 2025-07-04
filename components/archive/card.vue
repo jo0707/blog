@@ -48,7 +48,7 @@ withDefaults(defineProps<Props>(), {
           <!-- Tags -->
           <div class="mt-3 flex items-center gap-1 flex-wrap">
             <p v-for="tag in tags.slice(0, 3)" :key="tag"
-              class="text-xs bg-gray-200 dark:bg-slate-900 text-gray-800 dark:text-slate-200 rounded px-2 py-1 font-semibold">
+              class="text-xs bg-gray-200 dark:bg-slate-800 text-gray-800 dark:text-slate-200 rounded px-2 py-1 font-semibold">
               {{ tag }}
             </p>
             <p v-if="tags.length > 3" class="text-xs text-gray-500 dark:text-slate-400">

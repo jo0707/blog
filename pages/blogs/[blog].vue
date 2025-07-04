@@ -81,7 +81,28 @@ useHead({
 
 
 // TOC sidebar state
-const tocOpen = ref(true)
+const tocOpen = ref(false)
+
+onMounted(() => {
+  // Set initial state based on screen size
+  tocOpen.value = window.innerWidth >= 1024
+  
+  // Listen for resize events to update TOC state
+  const handleResize = () => {
+    if (window.innerWidth >= 1024) {
+      tocOpen.value = true
+    } else {
+      tocOpen.value = false
+    }
+  }
+  
+  window.addEventListener('resize', handleResize)
+  
+  // Cleanup on unmount
+  onUnmounted(() => {
+    window.removeEventListener('resize', handleResize)
+  })
+})
 
 const toggleToc = () => {
   tocOpen.value = !tocOpen.value
@@ -107,7 +128,7 @@ defineOgImageComponent('Test', {
 
     <!-- TOC Toggle Button -->
     <UButton @click="toggleToc" icon="i-heroicons-bars-3" size="lg" variant="outline" color="neutral"
-      class="fixed top-22 right-4 z-40 shadow-lg backdrop-blur-sm transition-all duration-300"
+      class="fixed top-16 md:top-22 right-4 z-40 shadow-lg backdrop-blur-sm transition-all duration-300"
       :class="{ 'opacity-0 pointer-events-none': tocOpen }" aria-label="Toggle Table of Contents" />
 
     <!-- Main Content -->
@@ -132,7 +153,7 @@ defineOgImageComponent('Test', {
     </main>
 
     <!-- Overlay -->
-    <div v-if="tocOpen" @click="tocOpen = false" class="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"></div>
+    <div v-if="tocOpen" @click="tocOpen = false" class="fixed inset-0 bg-black/30 z-30 lg:hidden"></div>
   </div>
 </template>
 

@@ -67,17 +67,10 @@ watch(() => route.path, () => {
           </li>
         </ul>
 
-        <!-- Mobile Navigation -->
+        <!-- Mobile Navigation Button -->
         <div class="sm:hidden">
-          <UDropdown :items="[
-            [
-              { label: 'Home', to: '/', icon: 'heroicons:home' },
-              { label: 'Posts', to: '/blogs', icon: 'heroicons:document-text' },
-              { label: 'About', to: '/about', icon: 'heroicons:user' }
-            ]
-          ]">
-            <UButton icon="heroicons:bars-3" variant="ghost" size="sm" color="neutral" />
-          </UDropdown>
+          <UButton icon="heroicons:bars-3" variant="ghost" size="sm" color="neutral" @click="toggleMobileMenu"
+            :aria-expanded="isMobileMenuOpen" aria-label="Toggle mobile menu" />
         </div>
 
         <!-- Theme Toggle -->
@@ -94,5 +87,34 @@ watch(() => route.path, () => {
         </div>
       </nav>
     </div>
+
+    <!-- Mobile Navigation Menu -->
+    <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 scale-95"
+      enter-to-class="opacity-100 scale-100" leave-active-class="transition ease-in duration-75"
+      leave-from-class="opacity-100 scale-100" leave-to-class="opacity-0 scale-95">
+      <div v-show="isMobileMenuOpen"
+        class="sm:hidden border-t border-gray-300 dark:border-gray-800 bg-white dark:bg-slate-900">
+        <div class="px-4 py-3 space-y-1">
+          <NuxtLink to="/" @click="closeMobileMenu"
+            :class="{ 'bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-white': $route.path === '/' }"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white transition-colors">
+            <Icon name="heroicons:home" class="inline w-5 h-5 mr-2" />
+            Home
+          </NuxtLink>
+          <NuxtLink to="/blogs" @click="closeMobileMenu"
+            :class="{ 'bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-white': $route.path === '/blogs' }"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white transition-colors">
+            <Icon name="heroicons:document-text" class="inline w-5 h-5 mr-2" />
+            Posts
+          </NuxtLink>
+          <NuxtLink to="/about" @click="closeMobileMenu"
+            :class="{ 'bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-white': $route.path === '/about' }"
+            class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white transition-colors">
+            <Icon name="heroicons:user" class="inline w-5 h-5 mr-2" />
+            About
+          </NuxtLink>
+        </div>
+      </div>
+    </Transition>
   </div>
 </template>

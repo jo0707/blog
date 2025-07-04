@@ -34,7 +34,7 @@ export const aboutPage = {
   title: "Joshua Palti Sinaga",
   description: "Software Engineer, Problem Solver, Web Enthusiast.",
   aboutMe:
-    "Hello, fellow human! I'm a software wizard who spends most of his day crafting code spells. When I'm not crafting code, you can find me summoning solutions to problems on online judges. Just don't ask me to cast any love spells, my magic only works on machines!",
+    "I enjoy finding creative solutions to everyday challenges and turning them into opportunities for innovation. I love building applications that not only function smoothly but also feel natural and easy to use. While I mainly work as a fullstack developer, I’m also passionate about exploring AI and IoT, combining new technologies to create meaningful and forward thinking solutions.",
 };
 
 export const seoData = {

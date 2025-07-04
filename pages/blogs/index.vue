@@ -127,7 +127,7 @@ defineOgImage({
 <template>
   <main class="container max-w-5xl mx-auto text-zinc-600">
     <ArchiveHero />
-    <div class="px-4">
+    <div class="px-4 max-md:mt-16">
       <UInput v-model="searchTest" placeholder="Search" size="lg" icon="material-symbols:search" class="w-full" />
     </div>
 

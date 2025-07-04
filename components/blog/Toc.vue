@@ -49,7 +49,7 @@ onUnmounted(() => {
 
 <template>
   <aside
-    class="toc-sidebar mt-[1px] fixed right-0 w-64 h-full bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto"
+    class="toc-sidebar fixed right-0 w-64 h-full bg-white dark:bg-gray-900 border-l border-gray-200 dark:border-gray-700 transform transition-transform duration-300 ease-in-out z-50 overflow-y-auto"
     :class="{ 'translate-x-0': tocOpen, 'translate-x-full': !tocOpen }">
     <UCard class="h-full rounded-none border-0">
       <template #header>

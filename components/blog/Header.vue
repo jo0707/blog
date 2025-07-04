@@ -20,18 +20,18 @@ withDefaults(defineProps<Props>(), {
 
 <template>
   <header>
-    <h1 class="text-xl dark:text-slate-100 md:text-3xl lg:text-4xl m-7 font-bold text-center">
+    <h1 class="text-lg dark:text-slate-100 md:text-3xl lg:text-4xl m-3 md:m-7 font-bold text-center">
       {{ title || '' }}
     </h1>
-    <div class="w-4/6 md:w-4/5 m-auto">
+    <div class="w-full md:w-4/5 m-auto">
       <NuxtImg :src="image || ''" :alt="alt || ''" width="600"
         class="w-full rounded shadow h-32 md:h-72  content-center object-cover" />
       <div class="flex gap-2 place-content-between mt-2">
 
-        <div class="flex place-content-center gap-1 flex-wrap">
+        <div class="flex place-content-start gap-1 flex-wrap">
           <NuxtLink v-for="tag in tags" :key="tag" :to="`/blogs?category=${tag.toLocaleLowerCase()}`">
             <span
-              class="text-xs bg-gray-200 dark:bg-slate-900 rounded px-2 py-1 font-semibold hover:bg-gray-300 dark:hover:bg-slate-800 transition-colors duration-200">{{
+              class="text-xs bg-gray-200 dark:bg-slate-800 rounded px-2 py-1 font-semibold hover:bg-gray-300 dark:hover:bg-slate-800 transition-colors duration-200">{{
                 tag }}</span>
           </NuxtLink>
         </div>
