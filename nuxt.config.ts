@@ -56,7 +56,7 @@ export default defineNuxtConfig({
     zeroRuntime: true,
     defaults: {
       cacheMaxAgeSeconds: 60,
-    }
+    },
   },
 
   colorMode: {
@@ -67,12 +67,9 @@ export default defineNuxtConfig({
 
   content: {
     experimental: { nativeSqlite: true },
-    // database: {
-    //   type: "postgres",
-    //   url:
-    //     process.env.DATABASE_URL ||
-    //     "postgres://user:password@localhost:5432/mydb",
-    // },
+    preview: {
+      api: "https://api.nuxt.studio",
+    },
     build: {
       markdown: {
         highlight: {
