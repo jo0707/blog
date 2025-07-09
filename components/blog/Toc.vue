@@ -68,7 +68,7 @@ onUnmounted(() => {
           <UButton v-for="link in links" :key="link.id" @click="scrollToHeading(link.id)"
             variant="link"
             color="neutral" size="sm" class="text-wrap h-auto py-2 cursor-pointer">
-            <span :class="{'underline': activeHeading == link.id}" class="text-sm text-justify leading-relaxed whitespace-normal">
+            <span :class="{'underline': activeHeading == link.id}" class="text-sm text-left leading-relaxed whitespace-normal">
               {{ link.text }}
             </span>
           </UButton>
