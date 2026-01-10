@@ -14,9 +14,6 @@ import RunningText from './RunningText.vue';
           Writing the journey of building, breaking, and learning in technology
         </p>
       </div>
-      <!-- <div class="px-4 sm:px-6 flex justify-center lg:justify-end order-1 lg:order-2">
-        <img src="/img/logo.jpg" alt="Hero Image" class="w-full max-w-md rounded-lg shadow-lg">
-      </div> -->
     </div>
   </div>
 </template>

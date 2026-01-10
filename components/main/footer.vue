@@ -1,7 +1,7 @@
 <template>
-  <div class="text-zinc-700 dark:text-slate-100">
+  <div class="text-zinc-700 dark:text-slate-100 mt-32">
     <div class="px-6 container max-w-5xl mx-auto">
-      <div class="border-t border-gray-400 dark:border-gray-800 mt-5 text-center text-sm py-6">
+      <div class="border-t border-gray-300 dark:border-gray-800 mt-5 text-center text-sm py-6">
         <h4 class="font-semibold text-base">Joshua Palti Sinaga</h4>
         <h5>Writing bugs in both frontend and backend since 2019</h5>
         © 2020-2024 | Powered by
