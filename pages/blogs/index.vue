@@ -19,7 +19,7 @@ const formattedData = computed(() => {
         description: articles.description || 'no-description available',
         image: meta.image || '/not-found.jpg',
         alt: meta.alt || 'no alter data available',
-        ogImage: meta.ogImage || '/not-found.jpg',  
+        ogImage: meta.ogImage || '/not-found.jpg',
         date: (new Date(meta.date)).toLocaleDateString() || 'unknown-date',
         tags: meta.tags || [],
         published: meta.published || false,
@@ -116,10 +116,12 @@ useHead({
 // Generate OG Image
 const siteData = useSiteConfig()
 defineOgImage({
+  component: 'Blogs',
   props: {
     title: 'Blog Archive',
     description: 'Browse all blog posts by category or search through our complete archive of articles.',
     siteName: siteData.url,
+    category: selectedCategory.value || '',
   },
 })
 </script>
