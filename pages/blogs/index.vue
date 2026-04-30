@@ -10,8 +10,13 @@ const searchTest = ref('')
 const selectedCategory = ref('')
 
 const formattedData = computed(() => {
-  return (
-    data.value?.map((articles) => {
+  return [...(data.value || [])]
+    .sort((firstArticle, secondArticle) => {
+      const firstMeta = firstArticle.meta as unknown as BlogPost
+      const secondMeta = secondArticle.meta as unknown as BlogPost
+      return new Date(secondMeta.date).getTime() - new Date(firstMeta.date).getTime()
+    })
+    .map((articles) => {
       const meta = articles.meta as unknown as BlogPost
       return {
         path: articles.path,
@@ -24,8 +29,7 @@ const formattedData = computed(() => {
         tags: meta.tags || [],
         published: meta.published || false,
       }
-    }) || []
-  )
+    })
 })
 
 const fuse = computed(() => {
