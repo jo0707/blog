@@ -108,6 +108,28 @@ const toggleToc = () => {
   tocOpen.value = !tocOpen.value
 }
 
+const shareUrl = computed(() => `${seoData.mySite}${path}`)
+
+const shareToInstagram = async () => {
+  const instagramShareData = {
+    title: data.value.title,
+    text: data.value.description,
+    url: shareUrl.value,
+  }
+
+  try {
+    if (navigator.share) {
+      await navigator.share(instagramShareData)
+      return
+    }
+
+    await navigator.clipboard?.writeText(shareUrl.value)
+    window.open('https://www.instagram.com/', '_blank', 'noopener,noreferrer')
+  } catch {
+    window.open('https://www.instagram.com/', '_blank', 'noopener,noreferrer')
+  }
+}
+
 // Provide TOC state to child components
 provide('tocOpen', tocOpen)
 provide('toggleToc', toggleToc)
@@ -148,6 +170,15 @@ defineOgImageComponent('Test', {
         <div class="flex flex-row flex-wrap md:flex-nowrap mt-24 gap-2 justify-center">
           <SocialShare v-for="network in ['facebook', 'twitter', 'linkedin', 'email']" :key="network" :network="network"
             :styled="true" :label="true" class="p-1" aria-label="Share with {network}" />
+          <button class="social-share-button social-share-button--instagram social-share-button--styled p-1"
+            style="--color-brand: #E4405F" aria-label="Share with Instagram" @click="shareToInstagram">
+            <svg class="social-share-button__icon" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img"
+              width="1em" height="1em" viewBox="0 0 24 24">
+              <path fill="currentColor"
+                d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4a5.8 5.8 0 0 1-5.8 5.8H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2m-.2 2A3.6 3.6 0 0 0 4 7.6v8.8A3.6 3.6 0 0 0 7.6 20h8.8a3.6 3.6 0 0 0 3.6-3.6V7.6A3.6 3.6 0 0 0 16.4 4H7.6m9.65 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5M12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10m0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+            </svg>
+            <span class="social-share-button__label">Share</span>
+          </button>
         </div>
       </div>
     </main>
