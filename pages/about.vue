@@ -63,6 +63,11 @@ defineOgImageComponent('About', {
                 class="w-full sm:w-auto text-xs sm:text-sm">
                 LinkedIn
               </UButton>
+              <UButton href="https://instagram.com/code.withjoo" icon="mdi:instagram" target="_blank"
+                aria-label="Instagram" color="neutral" variant="soft" size="sm"
+                class="w-full sm:w-auto text-xs sm:text-sm">
+                Instagram
+              </UButton>
               <UButton href="https://itsjo.works" icon="mdi:web-box" target="_blank" aria-label="My Site"
                 color="neutral" variant="soft" size="sm" class="w-full sm:w-auto text-xs sm:text-sm">
                 Portfolio

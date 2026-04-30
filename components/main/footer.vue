@@ -11,6 +11,8 @@
             aria-label="GitHub" color="neutral" variant="ghost" />
           <UButton class="p-1" href="https://linkedin.com/in/joshuapaltisinaga" icon="mdi:linkedin" target="_blank"
             aria-label="LinkedIn" color="neutral" variant="ghost" />
+          <UButton class="p-1" href="https://instagram.com/code.withjoo" icon="mdi:instagram" target="_blank"
+            aria-label="Instagram" color="neutral" variant="ghost" />
           <UButton class="p-1" href="https://itsjo.works" icon="mdi:web-box" target="_blank" aria-label="My Site"
             color="neutral" variant="ghost" />
           <UButton class="p-1" href="/rss.xml" icon="mdi:rss-box" target="_blank" aria-label="RSS Feed" color="neutral"
