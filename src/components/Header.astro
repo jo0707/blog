@@ -1,0 +1,93 @@
+---
+import { Icon } from 'astro-icon/components';
+import { navbarData } from '@/data';
+
+const pathname = Astro.url.pathname;
+const navItems = [
+  { href: '/', label: 'Home', icon: 'heroicons:home' },
+  { href: '/blogs', label: 'Posts', icon: 'heroicons:document-text' },
+  { href: '/about', label: 'About', icon: 'heroicons:user' },
+  { href: 'https://itsjo.works', label: 'Jo', icon: 'mdi:web-box', external: true },
+];
+
+const isActive = (href: string) => href === '/' ? pathname === '/' : href.startsWith('/') && pathname.startsWith(href);
+---
+
+<div class="py-3 sm:py-5 border-b bg-white dark:bg-slate-900 border-gray-300 dark:border-gray-800 font-semibold sticky top-0 z-50">
+  <div class="flex px-4 sm:px-6 container max-w-5xl justify-between mx-auto items-center">
+    <div class="flex-shrink-0">
+      <a href="/" class="text-lg sm:text-xl lg:text-2xl font-bold hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
+        {navbarData.homeTitle}
+      </a>
+    </div>
+
+    <nav class="flex items-center space-x-3 sm:space-x-4 lg:space-x-6" aria-label="Primary navigation">
+      <ul class="hidden sm:flex items-center space-x-4 lg:space-x-6 text-sm lg:text-base">
+        {navItems.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              target={item.external ? '_blank' : undefined}
+              rel={item.external ? 'noreferrer' : undefined}
+              class:list={[
+                'hover:text-gray-600 dark:hover:text-gray-300 transition-colors px-2 py-1',
+                isActive(item.href) && 'underline decoration-2 underline-offset-4',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <div class="sm:hidden">
+        <button id="mobile-menu-button" type="button" class="inline-flex items-center justify-center rounded px-2 py-1 hover:bg-gray-100 dark:hover:bg-slate-800" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle mobile menu">
+          <Icon name="heroicons:bars-3" class="h-5 w-5" />
+        </button>
+      </div>
+
+      <div class="flex-shrink-0">
+        <button id="theme-toggle" type="button" class="inline-flex items-center justify-center rounded px-2 py-1 hover:bg-gray-100 dark:hover:bg-slate-800" aria-label="Toggle color theme" title="Toggle color theme">
+          <Icon name="material-symbols:light-mode" class="h-5 w-5 dark:hidden" />
+          <Icon name="material-symbols:dark-mode" class="hidden h-5 w-5 dark:inline" />
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <div id="mobile-menu" class="hidden sm:hidden border-t border-gray-300 dark:border-gray-800 bg-white dark:bg-slate-900">
+    <div class="px-4 py-3 space-y-1">
+      {navItems.map((item) => (
+        <a
+          href={item.href}
+          target={item.external ? '_blank' : undefined}
+          rel={item.external ? 'noreferrer' : undefined}
+          class:list={[
+            'block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-slate-800 hover:text-gray-900 dark:hover:text-white transition-colors',
+            isActive(item.href) && 'bg-gray-100 dark:bg-slate-800 text-gray-900 dark:text-white',
+          ]}
+        >
+          <Icon name={item.icon} class="inline w-5 h-5 mr-2" />
+          {item.label}
+        </a>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
+  const themeToggle = document.getElementById('theme-toggle');
+
+  mobileMenuButton?.addEventListener('click', () => {
+    const isHidden = mobileMenu?.classList.toggle('hidden');
+    mobileMenuButton.setAttribute('aria-expanded', String(!isHidden));
+  });
+
+  themeToggle?.addEventListener('click', () => {
+    const nextTheme = document.documentElement.classList.contains('dark') ? 'light' : 'dark';
+    document.documentElement.classList.toggle('dark', nextTheme === 'dark');
+    localStorage.setItem('theme', nextTheme);
+  });
+</script>

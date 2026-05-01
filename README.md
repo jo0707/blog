@@ -1,76 +1,28 @@
-<h1 align="center">Nuxt Blog A Personal Blog Site</h1>
+# Joshua's Blog
 
-<p align="center">
-  <a href="https://joshuapaltisinaga.com" target="_blank">
-    <img src="./assets/images/dark.png">
-  </a>
-</p>
+Personal blog built with Astro, Tailwind CSS, and Astro Content Collections.
 
-<p align="center">
-  <strong>Big thanks to <a href="https://github.com/nurRiyad" target="_blank">@nurRiyad</a> for the repo template</strong>
-</p>
+## Commands
 
-### Built with
-
-<p align="center">
-    <img width="200" src="./assets/images/logo.png">
-</p>
-
-Nuxt Blog built with [Nuxt3](https://nuxt.com), [Nuxt-Content2](https://content.nuxtjs.org/blog/announcing-v2/), [Vue3](https://vuejs.org) & [TailwindCss](https://tailwindcss.com/)
+```bash
+bun install
+bun run dev
+bun run check
+bun run build
+bun run preview
+```
 
 ## Features
 
-- Write blog with markdown file
-- Auto generate category from blog post
-- Blog list page with search and pagination
-- About me page for user info
-- Auto generate table of content for blog post
-- Auto generate Sitemap
-- Url preview with Nuxt ogImage
-- Dark and light mode
-- Server Side Rendered(SSR) with Nuxt3
+- Markdown blog posts
+- Content collections
+- Blog archive with search, category filter, and pagination
+- Blog detail pages with table of contents
 - RSS feed
+- Sitemap and robots.txt
+- Dark/light mode
+- Responsive Tailwind design
 
-## How to Make This Blog Template Yours in 5 Minutes
+## Notes
 
-- Clone this repo or use it as a template
-- Go to ./data/index.ts file & add your personal info
-- Then head over to the ./content/blogs folder to add new blogs
-- Voilà! You've got a personalized blog site!
-
-## Preview
-
-<p align="center">
-  <a href="https://joshuapaltisinaga.com" target="_blank">
-    <img width="1090" src="./assets/images/preview1.png">
-    <img width="1090" src="./assets/images/preview2.png">
-    <img width="1090" src="./assets/images/preview3.png">
-    <img width="1090" src="./assets/images/preview4.png">
-    <br>
-    Live Demo
-  </a>
-</p>
-
-## Demo
-
-https://joshuapaltisinaga.com
-
-> Hosted on [Vercel](https://vercel.com/): `npm run build`
-
-## Build Setup
-
-**Bun Preferred**
-
-```bash
-# install dependencies
-bun install
-
-# serve in dev mode, with hot reload at localhost:5173
-bun run dev
-
-# build for production
-bun run build
-
-# serve in production mode
-bun run preview
-```
+- OG image metadata uses post images for now.

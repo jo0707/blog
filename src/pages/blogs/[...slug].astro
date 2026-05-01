@@ -1,0 +1,210 @@
+---
+import { getCollection, render } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogHeader from '@/components/BlogHeader.astro';
+import Toc from '@/components/Toc.astro';
+import { seoData, socialLinks } from '@/data';
+import { postSlug, postUrl } from '@/utils/helper';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blogs', ({ data }) => data.published);
+  return posts.map((post) => ({
+    params: { slug: postSlug(post.id) },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const canonical = new URL(postUrl(post.id), seoData.mySite).toString();
+const shareUrl = canonical;
+const shareText = post.data.title;
+const metaTitle = post.data.seoTitle || post.data.title;
+const metaDescription = post.data.seoDescription || post.data.description;
+const imageUrl = new URL(post.data.ogImage || post.data.image, seoData.mySite).toString();
+const publishedTime = post.data.date.toISOString();
+
+const articleJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BlogPosting',
+  headline: post.data.title,
+  description: metaDescription,
+  image: [imageUrl],
+  datePublished: publishedTime,
+  dateModified: publishedTime,
+  author: {
+    '@type': 'Person',
+    name: seoData.author,
+    url: socialLinks.portfolioLink,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: seoData.siteName,
+    logo: {
+      '@type': 'ImageObject',
+      url: new URL('/logo.png', seoData.mySite).toString(),
+    },
+  },
+  mainEntityOfPage: {
+    '@type': 'WebPage',
+    '@id': canonical,
+  },
+  keywords: post.data.tags.join(', '),
+};
+
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      name: 'Home',
+      item: seoData.mySite,
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      name: 'Posts',
+      item: new URL('/blogs/', seoData.mySite).toString(),
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      name: post.data.title,
+      item: canonical,
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title={metaTitle}
+  description={metaDescription}
+  image={post.data.ogImage || post.data.image}
+  canonical={canonical}
+  ogType="article"
+  publishedTime={publishedTime}
+  modifiedTime={publishedTime}
+  tags={post.data.tags}
+  jsonLd={[articleJsonLd, breadcrumbJsonLd]}
+>
+  <div class="blog-layout relative">
+    <Toc headings={headings} />
+
+    <button
+      id="toc-open"
+      type="button"
+      class="fixed top-16 md:top-22 right-4 z-40 shadow-lg backdrop-blur-sm transition-all duration-300 rounded border border-gray-300 dark:border-gray-700 bg-white/90 dark:bg-slate-900/90 p-3 text-gray-900 dark:text-slate-100"
+      aria-label="Toggle Table of Contents"
+    >
+      <Icon name="heroicons:bars-3" class="h-5 w-5" />
+    </button>
+
+    <main class="main-content min-h-screen">
+      <article class="content-wrapper max-w-5xl mx-auto px-6 py-8">
+        <BlogHeader
+          title={post.data.title}
+          image={post.data.image}
+          alt={post.data.alt}
+          date={post.data.date}
+          description={post.data.description}
+          tags={post.data.tags}
+        />
+
+        <div class="mt-4 prose leading-relaxed prose-pre:max-w-xs max-lg:m-4 sm:prose-pre:max-w-full prose-base sm:prose-base md:prose-lg prose-h1:no-underline max-w-none prose-slate dark:prose-invert prose-img:rounded-lg prose-headings:mb-4 prose-headings:scroll-mt-24 text-justify">
+          <Content />
+        </div>
+
+        <div class="flex flex-row flex-wrap md:flex-nowrap mt-24 gap-2 justify-center">
+          <a class="social-share-button social-share-button--facebook social-share-button--styled p-1" style="--color-brand:#1877F2" href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noreferrer" aria-label="Share with facebook">
+            <Icon name="mdi:facebook" class="social-share-button__icon" />
+            <span class="social-share-button__label">Share</span>
+          </a>
+          <a class="social-share-button social-share-button--twitter social-share-button--styled p-1" style="--color-brand:#1DA1F2" href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareText)}`} target="_blank" rel="noreferrer" aria-label="Share with twitter">
+            <Icon name="mdi:twitter" class="social-share-button__icon" />
+            <span class="social-share-button__label">Share</span>
+          </a>
+          <a class="social-share-button social-share-button--linkedin social-share-button--styled p-1" style="--color-brand:#0A66C2" href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noreferrer" aria-label="Share with linkedin">
+            <Icon name="mdi:linkedin" class="social-share-button__icon" />
+            <span class="social-share-button__label">Share</span>
+          </a>
+          <a class="social-share-button social-share-button--email social-share-button--styled p-1" style="--color-brand:#6B7280" href={`mailto:?subject=${encodeURIComponent(shareText)}&body=${encodeURIComponent(shareUrl)}`} aria-label="Share with email">
+            <Icon name="mdi:email" class="social-share-button__icon" />
+            <span class="social-share-button__label">Share</span>
+          </a>
+          <button id="instagram-share" class="social-share-button social-share-button--instagram social-share-button--styled p-1" style="--color-brand:#E4405F" aria-label="Share with Instagram" data-url={shareUrl} data-title={shareText} data-description={post.data.description}>
+            <Icon name="mdi:instagram" class="social-share-button__icon" />
+            <span class="social-share-button__label">Share</span>
+          </button>
+        </div>
+      </article>
+    </main>
+
+    <div id="toc-overlay" class="fixed inset-0 bg-black/30 z-30 lg:hidden hidden"></div>
+  </div>
+
+  <style>
+    @media (min-width: 1024px) {
+      .content-wrapper {
+        max-width: 800px;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .content-wrapper {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+    }
+
+    .social-share-button {
+      --color-brand: #6b7280;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      border-radius: 0.25rem;
+      color: white;
+      background: var(--color-brand);
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1;
+      min-height: 2rem;
+      text-decoration: none;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+    }
+
+    .social-share-button:hover {
+      opacity: 0.9;
+      transform: translateY(-1px);
+    }
+
+    .social-share-button__icon {
+      width: 1em;
+      height: 1em;
+      font-size: 1.125rem;
+    }
+  </style>
+
+  <script>
+    const instagramButton = document.getElementById('instagram-share') as HTMLButtonElement | null;
+    instagramButton?.addEventListener('click', async () => {
+      const url = instagramButton.dataset.url ?? window.location.href;
+      const title = instagramButton.dataset.title ?? document.title;
+      const text = instagramButton.dataset.description ?? title;
+
+      try {
+        if (navigator.share) {
+          await navigator.share({ title, text, url });
+          return;
+        }
+
+        await navigator.clipboard?.writeText(url);
+        window.open('https://www.instagram.com/', '_blank', 'noopener,noreferrer');
+      } catch {
+        window.open('https://www.instagram.com/', '_blank', 'noopener,noreferrer');
+      }
+    });
+  </script>
+</BaseLayout>

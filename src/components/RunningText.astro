@@ -1,0 +1,56 @@
+---
+interface Props {
+  text: string;
+  speed?: number;
+  cursorBlinkSpeed?: number;
+  class?: string;
+}
+
+const {
+  text,
+  speed = 100,
+  cursorBlinkSpeed = 500,
+  class: className = '',
+} = Astro.props;
+const id = `running-text-${Math.random().toString(36).slice(2)}`;
+---
+
+<div id={id} class:list={['running-text', className]} data-text={text} data-speed={speed} data-cursor-blink-speed={cursorBlinkSpeed}>
+  <span data-display></span>
+  <span data-cursor class="cursor ml-[2px]">|</span>
+</div>
+
+<style>
+  .cursor-blink {
+    animation: blink 1s infinite;
+  }
+
+  @keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+  }
+</style>
+
+<script is:inline define:vars={{ id }}>
+  const root = document.getElementById(id);
+  const display = root?.querySelector('[data-display]');
+  const cursor = root?.querySelector('[data-cursor]');
+
+  if (root && display && cursor) {
+    const text = root.dataset.text ?? '';
+    const speed = Number(root.dataset.speed ?? 100);
+    let currentIndex = 0;
+
+    cursor.classList.add('cursor-blink');
+    display.textContent = '';
+
+    const typingInterval = window.setInterval(() => {
+      if (currentIndex < text.length) {
+        display.textContent += text[currentIndex];
+        currentIndex += 1;
+      } else {
+        window.clearInterval(typingInterval);
+      }
+    }, speed);
+  }
+</script>
