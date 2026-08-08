@@ -95,7 +95,8 @@ Write posts in a casual, concise, and simple style. Sound like the site owner sh
 
 House rules (non-negotiable):
 
-- Never use emojis.
+- Use very few emojis, only for jokes or the closing section. One or two per post at most.
+- Add one or two light jokes per post when they fit naturally. Keep them short, relevant to the topic, and never forced.
 - Never use em dash characters (—). Use a regular dash or hyphen "-" instead.
 - Briefly explain technical terms the first time they appear.
 - Stay casual, concise, and simple. Short paragraphs, simple words.
@@ -106,6 +107,7 @@ Preferred style:
 - Clear and practical.
 - Curious and honest.
 - A little playful is fine.
+- Light jokes are welcome when they fit the flow. Use them like seasoning, not the main dish.
 - Explain lessons like sharing with a friend.
 - Keep paragraphs short.
 - Use simple words when possible.
@@ -145,7 +147,8 @@ Before saying a post is done:
 - Links work.
 - Tone feels relaxed and human.
 - No em dash characters; use a regular dash "-".
-- No emojis.
+- Very few emojis, only for jokes or the closing section.
+- One or two light jokes present when the topic allows it.
 - Technical terms are briefly explained.
 
 ## Validation
