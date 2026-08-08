@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import BlogHeader from '@/components/BlogHeader.astro';
+import CommentSection from '@/components/CommentSection.astro';
 import Toc from '@/components/Toc.astro';
 import { seoData, socialLinks } from '@/data';
 import { postSlug, postUrl } from '@/utils/helper';
@@ -139,6 +140,8 @@ const breadcrumbJsonLd = {
             <span class="social-share-button__label">Share</span>
           </button>
         </div>
+
+        <CommentSection />
       </article>
     </main>
 

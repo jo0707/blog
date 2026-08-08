@@ -1,0 +1,81 @@
+---
+interface Props {
+  repo?: string;
+  repoId?: string;
+  category?: string;
+  categoryId?: string;
+  mapping?: 'pathname' | 'url' | 'title' | 'og:title' | 'specific';
+  strict?: boolean;
+  reactionsEnabled?: boolean;
+  inputPosition?: 'top' | 'bottom';
+  lang?: string;
+}
+
+// Giscus configuration (https://giscus.app).
+const {
+  repo = 'jo0707/blog',
+  repoId = 'R_kgDOPFwa2Q',
+  category = 'Announcements',
+  categoryId = 'DIC_kwDOPFwa2c4DC7Ta',
+  mapping = 'pathname',
+  strict = false,
+  reactionsEnabled = true,
+  inputPosition = 'bottom',
+  lang = 'en',
+} = Astro.props;
+---
+
+<section id="comments" class="mt-16" aria-label="Comments">
+  <h2 class="mb-8 text-xl sm:text-2xl font-bold text-center dark:text-slate-100">Comments</h2>
+  <div class="giscus" />
+
+  <script
+    is:inline
+    src="https://giscus.app/client.js"
+    data-repo={repo}
+    data-repo-id={repoId}
+    data-category={category}
+    data-category-id={categoryId}
+    data-mapping={mapping}
+    data-strict={strict ? '1' : '0'}
+    data-reactions-enabled={reactionsEnabled ? '1' : '0'}
+    data-emit-metadata="0"
+    data-input-position={inputPosition}
+    data-theme="preferred_color_scheme"
+    data-lang={lang}
+    data-loading="lazy"
+    crossorigin="anonymous"
+    async
+  />
+
+  <script is:inline>
+    // Keep Giscus in sync with the site's manual dark/light toggle.
+    // Initial load uses `preferred_color_scheme`; every toggle after that
+    // pushes the matching theme into the Giscus iframe.
+    (() => {
+      const getTheme = () => (document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+
+      const syncGiscusTheme = () => {
+        document.querySelectorAll('iframe.giscus-frame').forEach((iframe) => {
+          iframe.contentWindow?.postMessage(
+            { giscus: { setConfig: { theme: getTheme() } } },
+            'https://giscus.app'
+          );
+        });
+      };
+
+      const themeObserver = new MutationObserver(syncGiscusTheme);
+      themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+      const iframeObserver = new MutationObserver(() => {
+        if (document.querySelector('iframe.giscus-frame')) {
+          syncGiscusTheme();
+          iframeObserver.disconnect();
+        }
+      });
+      iframeObserver.observe(document.body, { childList: true, subtree: true });
+      // Safety: stop watching if Giscus never renders (e.g. config not finalized yet)
+      window.setTimeout(() => iframeObserver.disconnect(), 10000);
+    })();
+  </script>
+</section>
