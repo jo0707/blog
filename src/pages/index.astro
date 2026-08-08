@@ -7,7 +7,7 @@ import { postUrl } from '@/utils/helper';
 
 const posts = (await getCollection('blogs', ({ data }) => data.published))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
-  .slice(0, 3);
+  .slice(0, 10);
 ---
 
 <BaseLayout title="Home" description="Welcome To Joshua's Blog Site. Read all about technology, web development, and more!">
