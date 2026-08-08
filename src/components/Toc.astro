@@ -52,7 +52,8 @@ const toc = headings.filter((heading) => heading.depth > 1 && heading.depth < 4)
   closeButton?.addEventListener('click', () => setOpen(false));
   openButton?.addEventListener('click', () => setOpen(true));
   overlay?.addEventListener('click', () => setOpen(false));
-  setOpen(window.innerWidth >= 1024);
+  // Start closed. The sidebar only opens when the user clicks the TOC button.
+  setOpen(false);
 
   links.forEach((link) => {
     link.addEventListener('click', () => {

@@ -33,7 +33,7 @@ const optimizedImage = postImage(image);
         loading="eager"
         fetchpriority="high"
         decoding="async"
-        class="w-full rounded shadow-md h-48 md:h-72 object-cover zoomable"
+        class="w-full rounded shadow-md h-48 md:h-72 object-cover zoomable border border-black/15 dark:border-white/20"
       />
     ) : (
       <img
@@ -44,7 +44,7 @@ const optimizedImage = postImage(image);
         loading="eager"
         fetchpriority="high"
         decoding="async"
-        class="w-full rounded shadow-md h-48 md:h-72 object-cover zoomable"
+        class="w-full rounded shadow-md h-48 md:h-72 object-cover zoomable border border-black/15 dark:border-white/20"
       />
     )}
     <div class="flex gap-2 place-content-between mt-2">
