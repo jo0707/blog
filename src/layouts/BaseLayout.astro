@@ -2,6 +2,7 @@
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import CodeBlockEnhancer from '@/components/CodeBlockEnhancer.astro';
+import ImageZoom from '@/components/ImageZoom.astro';
 import { seoData, socialLinks } from '@/data';
 import '@/styles/global.css';
 
@@ -94,6 +95,7 @@ const structuredData = [...baseStructuredData, ...(Array.isArray(jsonLd) ? jsonL
   <body class="font-sans bg-white dark:bg-slate-900 text-gray-900 dark:text-gray-100 min-h-screen flex flex-col">
     <Header />
     <CodeBlockEnhancer />
+    <ImageZoom />
     <main class="flex-1">
       <slot />
     </main>
