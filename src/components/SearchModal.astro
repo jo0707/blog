@@ -37,8 +37,7 @@
 
 <script is:inline>
   (() => {
-    // Keep a single document-level keydown handler across view transitions.
-    const KEY_HANDLER = '__pagefindKeyHandler';
+    // Document-level keydown handler for the '/' shortcut and 'Escape'.
     const onDocumentKeydown = (event) => {
       const modal = document.getElementById('search-modal');
       const input = document.getElementById('search-input');
@@ -64,10 +63,6 @@
       }
     };
 
-    if (window[KEY_HANDLER]) {
-      document.removeEventListener('keydown', window[KEY_HANDLER]);
-    }
-    window[KEY_HANDLER] = onDocumentKeydown;
     document.addEventListener('keydown', onDocumentKeydown);
 
     const init = () => {
@@ -173,17 +168,10 @@
       });
     };
 
-    // Dedupe the page-load listener across view transitions: the previous
-    // page's handler stays registered on `document`, so remove it first.
-    const prevPageLoad = window.__searchModalPageLoad;
-    if (prevPageLoad) document.removeEventListener('astro:page-load', prevPageLoad);
-    window.__searchModalPageLoad = init;
-
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', init, { once: true });
     } else {
       init();
     }
-    document.addEventListener('astro:page-load', init);
   })();
 </script>

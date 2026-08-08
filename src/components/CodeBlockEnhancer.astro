@@ -1,7 +1,6 @@
 ---
 // Enhances every rendered <pre> code block with a language label and a
-// copy-to-clipboard button. Runs on the initial load and after every
-// view transition navigation (astro:page-load).
+// copy-to-clipboard button. Runs once on page load (no view transitions).
 ---
 
 <script is:inline>
@@ -69,18 +68,11 @@
       });
     };
 
-    // Dedupe the page-load listener across view transitions: the previous
-    // page's handler stays registered on `document`, so remove it first.
-    const prevPageLoad = window.__codeBlockEnhance;
-    if (prevPageLoad) document.removeEventListener('astro:page-load', prevPageLoad);
-    window.__codeBlockEnhance = enhance;
-
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', enhance, { once: true });
     } else {
       enhance();
     }
-    document.addEventListener('astro:page-load', enhance);
   })();
 </script>
 

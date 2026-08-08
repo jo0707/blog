@@ -1,5 +1,4 @@
 ---
-import { ClientRouter } from 'astro:transitions';
 import Header from '@/components/Header.astro';
 import Footer from '@/components/Footer.astro';
 import CodeBlockEnhancer from '@/components/CodeBlockEnhancer.astro';
@@ -68,7 +67,6 @@ const structuredData = [...baseStructuredData, ...(Array.isArray(jsonLd) ? jsonL
     <link rel="canonical" href={canonical} />
     <link rel="alternate" type="application/rss+xml" title={seoData.siteName} href={new URL('/rss.xml', seoData.mySite).toString()} />
     <link rel="icon" href="/favicon.ico" />
-    <ClientRouter />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />

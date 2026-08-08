@@ -11,7 +11,7 @@ At the start of every session, ask the user which mode they want:
 
 How to behave:
 
-- If the user picks **Create a blog post** (or their first message is clearly about writing a post), read `BLOG_CREATE.md` and follow its workflow step by step.
+- If the user picks **Create a blog post** (or their first message is clearly about writing a post), check the `./draft/` folder first. Existing drafts are the first option: ask whether to continue, edit, or publish one of them before offering to start a new post. Then read `BLOG_CREATE.md` and follow its workflow step by step.
 - If the user picks **Develop** (or the message is clearly about the code, layout, or config), continue with the development guide below.
 - If the mode is unclear, ask before doing any work.
 - Do not silently choose a mode. When in doubt, ask.
@@ -33,6 +33,7 @@ Main folders:
 - `src/utils` - helpers (formatDate, postSlug, tagSlug, postImage)
 - `src/styles/global.css` - global Tailwind and CSS
 - `public` - static assets (body screenshots, OG fallbacks, favicons)
+- `./draft/` - unpublished post drafts; checked first in content sessions (see Content creation below)
 
 ## Commands
 
@@ -69,7 +70,7 @@ bun run build
 - Avoid adding large dependencies unless clear benefit exists.
 - Keep dark mode classes paired with light mode classes.
 - Do not reintroduce Nuxt, Vue, Nuxt UI, or Nuxt config.
-- The site uses Astro view transitions (`<ClientRouter />` in `BaseLayout`). Inline scripts re-run on every navigation, but `document`/`documentElement` persist across soft navigations, so any document-level listeners or observers (scroll, `astro:page-load`, `MutationObserver`) must be de-duplicated. The existing pattern stores the previous handler on `window` (e.g. `window.__tocScrollHandler`, `window.__giscusThemeObserver`) and removes/disconnects it before re-adding. Follow this pattern for any new interactive script (see `Toc.astro`, `CommentSection.astro`, `CodeBlockEnhancer.astro`, `SearchModal.astro`).
+- The site does not use view transitions (no `<ClientRouter />`); every navigation is a full page load. Inline scripts run once per page load on a fresh `document`, so no cross-navigation listener de-duplication is needed. If you ever reintroduce view transitions, you must de-duplicate document-level listeners/observers across navigations (see git history for the previous `window.__*` pattern).
 
 ## Design standards
 
@@ -87,7 +88,7 @@ Full-site search is powered by Pagefind. The index is generated at build time by
 
 - UI lives in `src/components/SearchModal.astro`, opened from the header search button (`#search-open`) or the `/` keyboard shortcut.
 - The Pagefind JS API is loaded lazily with a `/* @vite-ignore */` dynamic import of `/pagefind/pagefind.js`. In dev there is no index yet, so the modal shows a hint message instead.
-- Because of view transitions, the script re-binds on every `astro:page-load` and de-duplicates its document-level keydown handler (stored on `window.__searchModalPageLoad`).
+- The modal script binds once on page load (full page loads only, no view transitions).
 - Keep the header button id (`search-open`) in sync with the modal script.
 
 ## Images
@@ -137,7 +138,7 @@ Dark mode sync:
 
 - The site toggles a `dark` class on `<html>`.
 - Initial Giscus load uses `data-theme="preferred_color_scheme"`.
-- An inline script in `CommentSection.astro` observes class changes on `document.documentElement` with a `MutationObserver` and posts `{ giscus: { setConfig: { theme } } }` to the `iframe.giscus-frame` (targetOrigin `https://giscus.app`) so comments follow the manual dark/light toggle. The observers are stored on `window` (`__giscusThemeObserver`, `__giscusFrameObserver`) and disconnected before re-creation, because the script re-runs on every view transition.
+- An inline script in `CommentSection.astro` observes class changes on `document.documentElement` with a `MutationObserver` and posts `{ giscus: { setConfig: { theme } } }` to the `iframe.giscus-frame` (targetOrigin `https://giscus.app`) so comments follow the manual dark/light toggle.
 - If you change the theme toggle logic in `Header.astro`, keep this observer in sync.
 
 If the config ever needs regenerating:
@@ -150,7 +151,9 @@ Do not change the `mapping` or post URLs casually: Giscus ties each discussion t
 
 ## Content creation
 
-All rules for writing blog posts (frontmatter, file naming, images, tone, structure, checklist, and validation) live in `BLOG_CREATE.md` at the project root. Read it and follow it whenever the session mode is "Create a blog post".
+- Unfinished posts live in `./draft/` (one Markdown file per draft). Whenever the session mode is "Create a blog post", check `./draft/` first and offer existing drafts as the initial option before starting a new post.
+- Publishing a draft means moving it from `./draft/` to `src/content/blogs` and applying `BLOG_CREATE.md` (next file number, frontmatter, featured image, tone, checklist, validation).
+- All rules for writing blog posts (frontmatter, file naming, images, tone, structure, checklist, and validation) live in `BLOG_CREATE.md` at the project root. Read it and follow it whenever the session mode is "Create a blog post".
 
 ## SEO standards
 
