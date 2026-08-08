@@ -64,7 +64,13 @@ const {
         });
       };
 
+      // Disconnect observers from a previous page: with view transitions the
+      // inline script re-runs while `document` persists across navigations.
+      if (window.__giscusThemeObserver) window.__giscusThemeObserver.disconnect();
+      if (window.__giscusFrameObserver) window.__giscusFrameObserver.disconnect();
+
       const themeObserver = new MutationObserver(syncGiscusTheme);
+      window.__giscusThemeObserver = themeObserver;
       themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
       const iframeObserver = new MutationObserver(() => {
@@ -73,6 +79,7 @@ const {
           iframeObserver.disconnect();
         }
       });
+      window.__giscusFrameObserver = iframeObserver;
       iframeObserver.observe(document.body, { childList: true, subtree: true });
       // Safety: stop watching if Giscus never renders (e.g. config not finalized yet)
       window.setTimeout(() => iframeObserver.disconnect(), 10000);

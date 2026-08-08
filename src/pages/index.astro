@@ -31,6 +31,15 @@ const posts = (await getCollection('blogs', ({ data }) => data.published))
           />
         ))}
       </div>
+
+      <div class="mt-10 text-center">
+        <a
+          href="/blogs"
+          class="inline-flex items-center gap-2 rounded border border-gray-300 dark:border-gray-700 px-5 py-2.5 text-sm font-semibold text-gray-800 dark:text-slate-100 transition-colors hover:bg-gray-100 dark:hover:bg-slate-800"
+        >
+          View all posts
+        </a>
+      </div>
     </section>
   </main>
 </BaseLayout>

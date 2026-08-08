@@ -1,0 +1,189 @@
+---
+// Full-site search powered by Pagefind.
+// The index is generated at build time (postbuild: pagefind --site dist).
+// In dev mode the index does not exist yet, so a friendly hint is shown.
+---
+
+<div
+  id="search-modal"
+  class="fixed inset-0 z-[60] hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-label="Search the blog"
+>
+  <div id="search-overlay" class="absolute inset-0 bg-black/40"></div>
+  <div class="relative mx-auto mt-20 sm:mt-28 w-[calc(100%-2rem)] max-w-xl">
+    <div class="overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-slate-900 shadow-2xl">
+      <div class="flex items-center gap-2 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-5 w-5 shrink-0 text-gray-500 dark:text-slate-400">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+        </svg>
+        <input
+          id="search-input"
+          type="search"
+          aria-label="Search posts"
+          placeholder="Search posts..."
+          autocomplete="off"
+          autocapitalize="off"
+          spellcheck="false"
+          class="w-full bg-transparent text-sm text-gray-900 dark:text-slate-100 outline-none placeholder:text-gray-400 dark:placeholder:text-slate-500"
+        />
+        <kbd class="hidden sm:inline rounded border border-gray-300 dark:border-gray-600 px-1.5 py-0.5 text-xs text-gray-400">Esc</kbd>
+      </div>
+      <div id="search-results" class="max-h-96 overflow-y-auto p-2"></div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (() => {
+    // Keep a single document-level keydown handler across view transitions.
+    const KEY_HANDLER = '__pagefindKeyHandler';
+    const onDocumentKeydown = (event) => {
+      const modal = document.getElementById('search-modal');
+      const input = document.getElementById('search-input');
+      const openButton = document.getElementById('search-open');
+      if (!modal || !input || !openButton) return;
+
+      if (event.key === 'Escape' && !modal.classList.contains('hidden')) {
+        modal.classList.add('hidden');
+        input.value = '';
+        return;
+      }
+
+      if (event.key === '/') {
+        const target = event.target;
+        const tag = target?.tagName;
+        const isTyping =
+          tag === 'INPUT' || tag === 'TEXTAREA' || target?.isContentEditable;
+        if (isTyping) return;
+        event.preventDefault();
+        modal.classList.remove('hidden');
+        input.value = '';
+        input.focus();
+      }
+    };
+
+    if (window[KEY_HANDLER]) {
+      document.removeEventListener('keydown', window[KEY_HANDLER]);
+    }
+    window[KEY_HANDLER] = onDocumentKeydown;
+    document.addEventListener('keydown', onDocumentKeydown);
+
+    const init = () => {
+      const modal = document.getElementById('search-modal');
+      const input = document.getElementById('search-input');
+      const results = document.getElementById('search-results');
+      const openButton = document.getElementById('search-open');
+      if (!modal || !input || !results || !openButton) return;
+      if (modal.dataset.bound === 'true') return;
+      modal.dataset.bound = 'true';
+
+      let pagefind = null;
+      let pagefindReady = null;
+
+      const loadPagefind = () => {
+        if (pagefindReady) return pagefindReady;
+        pagefindReady = (async () => {
+          try {
+            const PAGE_FIND_PATH = '/pagefind/pagefind.js';
+            const mod = await import(/* @vite-ignore */ PAGE_FIND_PATH);
+            await mod.init?.();
+            pagefind = mod;
+            return mod;
+          } catch {
+            pagefind = null;
+            return null;
+          }
+        })();
+        return pagefindReady;
+      };
+
+      const showHint = (message) => {
+        results.innerHTML = `<p class="px-3 py-6 text-center text-sm text-gray-500 dark:text-slate-400">${message}</p>`;
+      };
+
+      const open = async () => {
+        modal.classList.remove('hidden');
+        input.value = '';
+        results.innerHTML = '';
+        window.setTimeout(() => input.focus(), 30);
+        const pf = await loadPagefind();
+        if (!pf) showHint('Search is available after building the site (bun run build).');
+      };
+
+      const close = () => {
+        modal.classList.add('hidden');
+        input.value = '';
+        results.innerHTML = '';
+      };
+
+      openButton.addEventListener('click', open);
+      modal.addEventListener('click', (event) => {
+        if (event.target === modal || event.target?.id === 'search-overlay') close();
+      });
+      results.addEventListener('click', (event) => {
+        if (event.target.closest('a')) close();
+      });
+
+      let debounceTimer;
+      input.addEventListener('input', () => {
+        window.clearTimeout(debounceTimer);
+        const query = input.value.trim();
+        if (!query) {
+          results.innerHTML = '';
+          return;
+        }
+        debounceTimer = window.setTimeout(async () => {
+          const pf = pagefind || (await loadPagefind());
+          if (!pf) return;
+          const search =
+            (await pf.debouncedSearch?.(query)) ?? (await pf.search(query));
+          if (!search) return;
+          if (search.results.length === 0) {
+            showHint('No results found.');
+            return;
+          }
+          const items = await Promise.all(
+            search.results.slice(0, 8).map((result) => result.data())
+          );
+          const escapeHtml = (value) =>
+            String(value).replace(/[&<>"']/g, (char) => ({
+              '&': '&amp;',
+              '<': '&lt;',
+              '>': '&gt;',
+              '"': '&quot;',
+              "'": '&#39;',
+            })[char]);
+          results.innerHTML = items
+            .map((item) => {
+              const title = escapeHtml(item.meta?.title || 'Untitled');
+              const excerpt = item.excerpt
+                ? item.excerpt
+                    .replace(/<mark>/g, '<mark class="rounded bg-yellow-200/80 px-0.5 dark:bg-yellow-600/40">')
+                    .replace(/<\/mark>/g, '</mark>')
+                : '';
+              return `<a href="${item.url}" class="block rounded-md px-3 py-2.5 hover:bg-gray-100 dark:hover:bg-slate-800">
+                <span class="block text-sm font-semibold text-gray-900 dark:text-slate-100">${title}</span>
+                ${excerpt ? `<span class="mt-0.5 block text-xs leading-relaxed text-gray-600 line-clamp-2 dark:text-slate-400">${excerpt}</span>` : ''}
+              </a>`;
+            })
+            .join('');
+        }, 150);
+      });
+    };
+
+    // Dedupe the page-load listener across view transitions: the previous
+    // page's handler stays registered on `document`, so remove it first.
+    const prevPageLoad = window.__searchModalPageLoad;
+    if (prevPageLoad) document.removeEventListener('astro:page-load', prevPageLoad);
+    window.__searchModalPageLoad = init;
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init, { once: true });
+    } else {
+      init();
+    }
+    document.addEventListener('astro:page-load', init);
+  })();
+</script>

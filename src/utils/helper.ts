@@ -13,6 +13,13 @@ export function postSlug(id: string): string {
   return id.replace(/^\d+\.?/, '');
 }
 
+export function tagSlug(tag: string): string {
+  return tag
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+}
+
 export function postUrl(id: string): string {
   return `/blogs/${postSlug(id)}/`;
 }

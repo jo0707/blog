@@ -1,5 +1,6 @@
 ---
-import { formatDate } from '@/utils/helper';
+import { Image } from 'astro:assets';
+import { formatDate, tagSlug } from '@/utils/helper';
 
 interface Props {
   title: string;
@@ -18,11 +19,20 @@ const { title, image, alt, description, date, tags } = Astro.props;
     {title}
   </h1>
   <div class="w-11/12 md:w-4/5 m-auto mt-6">
-    <img src={image} alt={alt} width="900" height="405" loading="eager" fetchpriority="high" decoding="async" class="w-full rounded shadow h-48 md:h-72 object-cover" />
+    <Image
+      src={image}
+      alt={alt}
+      width={900}
+      height={405}
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      class="w-full rounded shadow h-48 md:h-72 object-cover"
+    />
     <div class="flex gap-2 place-content-between mt-2">
       <div class="flex place-content-start gap-2 flex-wrap w-1/2 md:w-5/12">
         {tags.map((tag) => (
-          <a href={`/blogs?category=${encodeURIComponent(tag.toLowerCase())}`}>
+          <a href={`/tags/${tagSlug(tag)}`}>
             <span class="text-[0.6rem] sm:text-xs bg-gray-200 dark:bg-slate-800 rounded px-2 py-1 font-semibold hover:bg-gray-300 dark:hover:bg-slate-700 transition-colors duration-200">
               {tag}
             </span>

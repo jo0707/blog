@@ -73,6 +73,11 @@ const toc = headings.filter((heading) => heading.depth > 1 && heading.depth < 4)
     });
   };
 
+  // Dedupe across view transitions: `document` persists between navigations,
+  // so remove the previous page's scroll handler before adding a new one.
+  const prevScrollHandler = (window as any).__tocScrollHandler;
+  if (prevScrollHandler) document.removeEventListener('scroll', prevScrollHandler);
+  (window as any).__tocScrollHandler = updateActiveHeading;
   document.addEventListener('scroll', updateActiveHeading, { passive: true });
   updateActiveHeading();
 </script>

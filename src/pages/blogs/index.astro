@@ -27,6 +27,7 @@ const categories = [...new Set(posts.flatMap((post) => post.data.tags))].sort();
       <div class="flex flex-wrap items-center gap-3 mb-4">
         <h2 class="text-lg font-semibold text-zinc-800 dark:text-slate-100">Filter by Category:</h2>
         <button id="clear-filters" type="button" class="rounded bg-gray-100 dark:bg-slate-800 px-3 py-1 text-sm hover:bg-gray-200 dark:hover:bg-slate-700">Clear All</button>
+        <a href="/tags" class="ml-auto text-sm font-medium text-gray-800 underline underline-offset-4 transition-colors hover:text-gray-950 dark:text-slate-200 dark:hover:text-white">Browse all tags</a>
       </div>
 
       <div class="flex flex-wrap gap-2" id="category-buttons">

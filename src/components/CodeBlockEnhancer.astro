@@ -1,0 +1,143 @@
+---
+// Enhances every rendered <pre> code block with a language label and a
+// copy-to-clipboard button. Runs on the initial load and after every
+// view transition navigation (astro:page-load).
+---
+
+<script is:inline>
+  (() => {
+    const enhance = () => {
+      document.querySelectorAll('pre').forEach((pre) => {
+        if (pre.dataset.codeEnhanced === 'true') return;
+        pre.dataset.codeEnhanced = 'true';
+
+        const code = pre.querySelector('code');
+        const lang = code?.className.match(/language-([\w-]+)/)?.[1] ?? '';
+        const copyText = () => pre.querySelector('code')?.innerText ?? '';
+
+        const wrapper = document.createElement('div');
+        wrapper.className = 'code-block';
+        pre.parentNode?.insertBefore(wrapper, pre);
+        wrapper.appendChild(pre);
+
+        const bar = document.createElement('div');
+        bar.className = 'code-block__bar';
+        // Match the shiki background and text color so the label bar blends
+        // with the block in both light and dark site themes.
+        const preStyle = getComputedStyle(pre);
+        bar.style.backgroundColor = preStyle.backgroundColor;
+        bar.style.color = preStyle.color;
+
+        const label = document.createElement('span');
+        label.className = 'code-block__lang';
+        label.textContent = lang;
+        label.setAttribute('aria-hidden', 'true');
+
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'code-block__copy';
+        button.setAttribute('aria-label', `Copy ${lang ? lang + ' ' : ''}code`);
+        button.textContent = 'Copy';
+        button.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(copyText());
+          } catch {
+            const textarea = document.createElement('textarea');
+            textarea.value = copyText();
+            textarea.style.position = 'fixed';
+            textarea.style.opacity = '0';
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+              // @ts-ignore - legacy fallback when the async clipboard API is unavailable
+              document.execCommand('copy');
+            } catch {
+              /* no fallback available */
+            }
+            textarea.remove();
+          }
+          button.textContent = 'Copied!';
+          button.dataset.copied = 'true';
+          window.setTimeout(() => {
+            button.textContent = 'Copy';
+            delete button.dataset.copied;
+          }, 1500);
+        });
+
+        bar.append(label, button);
+        wrapper.prepend(bar);
+      });
+    };
+
+    // Dedupe the page-load listener across view transitions: the previous
+    // page's handler stays registered on `document`, so remove it first.
+    const prevPageLoad = window.__codeBlockEnhance;
+    if (prevPageLoad) document.removeEventListener('astro:page-load', prevPageLoad);
+    window.__codeBlockEnhance = enhance;
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', enhance, { once: true });
+    } else {
+      enhance();
+    }
+    document.addEventListener('astro:page-load', enhance);
+  })();
+</script>
+
+<style is:global>
+  .code-block {
+    position: relative;
+    margin: 1.25rem 0;
+  }
+
+  .code-block__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.4rem 0.75rem;
+    border-radius: 0.5rem 0.5rem 0 0;
+    border: 1px solid rgb(255 255 255 / 0.08);
+    border-bottom: none;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+  }
+
+  .code-block__lang {
+    text-transform: lowercase;
+    opacity: 0.8;
+    user-select: none;
+  }
+
+  .code-block__copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 0.375rem;
+    border: 1px solid rgb(255 255 255 / 0.18);
+    background: rgb(255 255 255 / 0.06);
+    color: inherit;
+    font-family: inherit;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, border-color 0.15s ease;
+  }
+
+  .code-block__copy:hover {
+    background: rgb(255 255 255 / 0.14);
+    border-color: rgb(255 255 255 / 0.32);
+  }
+
+  .code-block__copy[data-copied] {
+    border-color: rgb(52 211 153 / 0.6);
+    color: rgb(52 211 153);
+  }
+
+  /* Undo the prose pre margins so the bar + pre form one continuous block. */
+  .code-block pre {
+    margin-top: 0;
+    margin-bottom: 0;
+    border-radius: 0 0 0.5rem 0.5rem;
+  }
+</style>

@@ -1,5 +1,6 @@
 ---
 import { Icon } from 'astro-icon/components';
+import SearchModal from '@/components/SearchModal.astro';
 import { navbarData } from '@/data';
 
 const pathname = Astro.url.pathname;
@@ -47,6 +48,14 @@ const isActive = (href: string) => href === '/' ? pathname === '/' : href.starts
       </div>
 
       <div class="flex-shrink-0">
+        <button id="search-open" type="button" class="inline-flex items-center justify-center rounded px-2 py-1 hover:bg-gray-100 dark:hover:bg-slate-800" aria-label="Search the blog" title="Search">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="h-5 w-5">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="flex-shrink-0">
         <button id="theme-toggle" type="button" class="inline-flex items-center justify-center rounded px-2 py-1 hover:bg-gray-100 dark:hover:bg-slate-800" aria-label="Toggle color theme" title="Toggle color theme">
           <Icon name="material-symbols:light-mode" class="h-5 w-5 dark:hidden" />
           <Icon name="material-symbols:dark-mode" class="hidden h-5 w-5 dark:inline" />
@@ -54,6 +63,8 @@ const isActive = (href: string) => href === '/' ? pathname === '/' : href.starts
       </div>
     </nav>
   </div>
+
+  <SearchModal />
 
   <div id="mobile-menu" class="hidden sm:hidden border-t border-gray-300 dark:border-gray-800 bg-white dark:bg-slate-900">
     <div class="px-4 py-3 space-y-1">

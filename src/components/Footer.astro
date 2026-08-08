@@ -1,5 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
+
+const year = new Date().getFullYear();
 ---
 
 <footer class="text-zinc-700 dark:text-slate-100 mt-32">
@@ -7,7 +9,7 @@ import { Icon } from 'astro-icon/components';
     <div class="border-t border-gray-300 dark:border-gray-800 mt-5 text-center text-sm py-6">
       <h4 class="font-semibold text-base">Joshua Palti Sinaga</h4>
       <h5>Writing bugs in both frontend and backend since 2019</h5>
-      © 2020-2024 | Powered by
+      © 2020-{year} | Powered by
       <a href="https://astro.build" target="_blank" rel="nofollow" class="underline">Astro</a>
       <div class="flex place-content-center">
         <a class="p-1 rounded hover:bg-gray-100 dark:hover:bg-slate-800" href="https://github.com/jo0707" target="_blank" aria-label="GitHub" rel="noreferrer">

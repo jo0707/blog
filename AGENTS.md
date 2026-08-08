@@ -2,9 +2,25 @@
 
 Guide for agents working on this Astro blog.
 
+## Session workflow (read first)
+
+At the start of every session, ask the user which mode they want:
+
+1. **Create a blog post** - a session for writing or editing blog content.
+2. **Develop** - a session for building or fixing the site itself.
+
+How to behave:
+
+- If the user picks **Create a blog post** (or their first message is clearly about writing a post), read `BLOG_CREATE.md` and follow its workflow step by step.
+- If the user picks **Develop** (or the message is clearly about the code, layout, or config), continue with the development guide below.
+- If the mode is unclear, ask before doing any work.
+- Do not silently choose a mode. When in doubt, ask.
+
 ## Project
 
 Personal blog built with Astro, Tailwind CSS, Astro Content Collections, and Bun.
+
+Note: Astro is pinned to 7.2.0. Do not downgrade. Earlier 6.x versions fail to build this project (see the Giscus section below for context on why).
 
 Main folders:
 
@@ -60,88 +76,44 @@ bun run build
 - Prefer calm neutral colors.
 - Keep animations subtle.
 
-## Content creation rules
+## Comments (Giscus)
 
-Blog posts live in:
+Blog posts show a comment section powered by Giscus, which stores comments as GitHub Discussions in the `jo0707/blog` repo. Visitors need a GitHub account to comment.
+
+The widget lives in `src/components/CommentSection.astro` and is rendered on every blog post by `src/pages/blogs/[...slug].astro`.
+
+Current Giscus config (keep in sync with the giscus.app wizard):
 
 ```txt
-src/content/blogs
+repo: jo0707/blog
+repo-id: R_kgDOPFwa2Q   (repo node_id from the GitHub API)
+category: Announcements  (only maintainers can create threads; anyone can comment)
+category-id: DIC_kwDOPFwa2c4DC7Ta
+mapping: pathname
+strict: 0
+reactions: on
+input-position: bottom
+lang: en
 ```
 
-Use Markdown with frontmatter:
+Dark mode sync:
 
-```md
----
-title: Post title
-date: 2026-05-01
-description: Short friendly summary.
-image: /path-to-image.png
-alt: Helpful image alt text.
-ogImage: /path-to-image.png
-tags:
-  - tag-one
-  - tag-two
-published: true
----
-```
+- The site toggles a `dark` class on `<html>`.
+- Initial Giscus load uses `data-theme="preferred_color_scheme"`.
+- An inline script in `CommentSection.astro` observes class changes on `document.documentElement` with a `MutationObserver` and posts `{ giscus: { setConfig: { theme } } }` to the `iframe.giscus-frame` (targetOrigin `https://giscus.app`) so comments follow the manual dark/light toggle.
+- If you change the theme toggle logic in `Header.astro`, keep this observer in sync.
 
-Rules:
+If the config ever needs regenerating:
 
-- File names should start with a number, then a dot, then slug text.
-  - Example: `3.my-new-post.md`
-- Blog URL removes leading number.
-  - `3.my-new-post.md` becomes `/blogs/my-new-post`
-- Keep `description` short and useful.
-- Use real alt text for images.
-- Store static images in `public`.
-- Reference public images from root path.
-  - Example: `/blogs-img/my-image.png`
-- Use tags in lowercase or natural category form.
-- Set `published: false` for drafts.
-- Do not commit broken image paths.
+1. Enable Discussions on the repo (Settings, General, Discussions).
+2. Install the giscus GitHub App on `jo0707/blog` only.
+3. Open giscus.app, pick the repo and the Announcements category, and copy `data-repo-id` and `data-category-id` into the component defaults.
 
-## Writing tone
+Do not change the `mapping` or post URLs casually: Giscus ties each discussion to the page pathname, so a URL change orphans the comment thread.
 
-Write posts with an enjoy, happy, relaxed tone.
+## Content creation
 
-Preferred style:
-
-- Friendly and natural.
-- Clear and practical.
-- Curious and honest.
-- A little playful is fine.
-- Explain lessons like sharing with a friend.
-- Keep paragraphs short.
-- Use simple words when possible.
-- Sound human, not corporate.
-
-Avoid:
-
-- Robotic GPT or LLM style.
-- Em dash characters.
-- Overly polished marketing tone.
-- Big claims without context.
-- Too many buzzwords.
-- Fake certainty.
-- Long intros that delay the point.
-
-Use normal punctuation. Prefer comma, period, colon, semicolon, or simple hyphen instead of em dash.
-
-## Content quality checklist
-
-Before adding or editing a post:
-
-- Title is clear.
-- Date is valid.
-- Description fits SEO and preview cards.
-- Images exist in `public`.
-- Alt text describes the image.
-- Headings follow a logical order.
-- Code blocks have language tags when possible.
-- Links work.
-- Tone feels relaxed and human.
-- No em dash characters.
-- Run `bun run check` and `bun run build`.
+All rules for writing blog posts (frontmatter, file naming, images, tone, structure, checklist, and validation) live in `BLOG_CREATE.md` at the project root. Read it and follow it whenever the session mode is "Create a blog post".
 
 ## SEO standards
 

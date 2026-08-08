@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "pagefind --site dist",
     "preview": "astro preview",
     "check": "astro check"
   },
@@ -23,5 +24,9 @@
     "tailwindcss": "latest",
     "typescript": "latest"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "@types/markdown-it": "^14.1.2",
+    "markdown-it": "^15.0.0",
+    "pagefind": "^1.5.2"
+  }
 }
