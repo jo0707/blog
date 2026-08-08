@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { formatDate, tagSlug } from '@/utils/helper';
+import { postImage } from '@/utils/postImages';
 
 interface Props {
   title: string;
@@ -12,6 +13,7 @@ interface Props {
 }
 
 const { title, image, alt, description, date, tags } = Astro.props;
+const optimizedImage = postImage(image);
 ---
 
 <header>
@@ -19,16 +21,32 @@ const { title, image, alt, description, date, tags } = Astro.props;
     {title}
   </h1>
   <div class="w-11/12 md:w-4/5 m-auto mt-6">
-    <Image
-      src={image}
-      alt={alt}
-      width={900}
-      height={405}
-      loading="eager"
-      fetchpriority="high"
-      decoding="async"
-      class="w-full rounded shadow h-48 md:h-72 object-cover"
-    />
+    {optimizedImage ? (
+      <Image
+        src={optimizedImage}
+        alt={alt}
+        width={900}
+        height={405}
+        widths={[600, 900, 1200]}
+        sizes="(max-width: 768px) 100vw, 800px"
+        format="webp"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        class="w-full rounded shadow h-48 md:h-72 object-cover"
+      />
+    ) : (
+      <img
+        src={image}
+        alt={alt}
+        width="900"
+        height="405"
+        loading="eager"
+        fetchpriority="high"
+        decoding="async"
+        class="w-full rounded shadow h-48 md:h-72 object-cover"
+      />
+    )}
     <div class="flex gap-2 place-content-between mt-2">
       <div class="flex place-content-start gap-2 flex-wrap w-1/2 md:w-5/12">
         {tags.map((tag) => (

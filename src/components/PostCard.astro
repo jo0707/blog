@@ -1,6 +1,7 @@
 ---
 import { Image } from 'astro:assets';
 import { formatDate, tagSlug } from '@/utils/helper';
+import { postImage } from '@/utils/postImages';
 
 interface Props {
   href: string;
@@ -13,20 +14,36 @@ interface Props {
 }
 
 const { href, title, date, description, image, alt, tags } = Astro.props;
+const optimizedImage = postImage(image);
 ---
 
 <article class="md:h-48 group rounded-sm overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300 border border-gray-200 dark:border-gray-800 bg-white dark:bg-slate-900">
   <div class="grid grid-cols-1 md:grid-cols-10 gap-0 md:gap-1 min-h-[200px] md:h-40">
     <a href={href} aria-label={title} class="md:col-span-3 h-36 md:h-full block">
-      <Image
-        src={image}
-        alt={alt}
-        width={300}
-        height={160}
-        loading="lazy"
-        decoding="async"
-        class="h-full w-full object-cover"
-      />
+      {optimizedImage ? (
+        <Image
+          src={optimizedImage}
+          alt={alt}
+          width={300}
+          height={160}
+          widths={[300, 600, 900]}
+          sizes="(max-width: 768px) 100vw, 300px"
+          format="webp"
+          loading="lazy"
+          decoding="async"
+          class="h-full w-full object-cover"
+        />
+      ) : (
+        <img
+          src={image}
+          alt={alt}
+          width="300"
+          height="160"
+          loading="lazy"
+          decoding="async"
+          class="h-full w-full object-cover"
+        />
+      )}
     </a>
 
     <div class="md:col-span-7 p-4 sm:p-5 flex flex-col justify-between">

@@ -81,10 +81,11 @@ Fields:
 
 ## Images
 
-- Store static images in `public`.
-- Reference public images from root path.
-  - Example: `/blogs-img/my-image.png`
-  - Existing posts use `/3.my-post-slug/image1.png` style folders. Follow whatever pattern the site already uses.
+- **Featured images** (the `image` frontmatter field, shown on post cards and headers) live in `src/assets/blogs/` and are optimized automatically (resize + WebP) by astro:assets.
+- Keep the frontmatter `image` path mirroring the `src/assets/blogs` folder, without the `src/assets/blogs` prefix.
+  - Example: file at `src/assets/blogs/4.my-post-slug/cover.png` -> `image: /4.my-post-slug/cover.png`
+- Screenshots inside the post body can keep living in `public` and are referenced from root path (e.g. `/4.my-post-slug/shot1.png`). They are served as-is.
+- `ogImage` is optional and defaults to `image`. Social previews are generated from the optimized featured image.
 - Use real alt text that describes the image.
 - Do not commit broken image paths. Check that each referenced image exists.
 

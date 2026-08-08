@@ -1,5 +1,6 @@
 ---
 import { getCollection, render } from 'astro:content';
+import { getImage } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import BlogHeader from '@/components/BlogHeader.astro';
@@ -7,6 +8,7 @@ import CommentSection from '@/components/CommentSection.astro';
 import Toc from '@/components/Toc.astro';
 import { seoData, socialLinks } from '@/data';
 import { postSlug, postUrl } from '@/utils/helper';
+import { postImage } from '@/utils/postImages';
 
 export async function getStaticPaths() {
   const posts = await getCollection('blogs', ({ data }) => data.published);
@@ -23,7 +25,23 @@ const shareUrl = canonical;
 const shareText = post.data.title;
 const metaTitle = post.data.seoTitle || post.data.title;
 const metaDescription = post.data.seoDescription || post.data.description;
-const imageUrl = new URL(post.data.ogImage || post.data.image, seoData.mySite).toString();
+
+// Use the optimized featured image (WebP) for social/OG previews when
+// available; fall back to the frontmatter public path otherwise.
+const featuredImage = postImage(post.data.image);
+let metaImagePath = post.data.ogImage || post.data.image;
+if (featuredImage) {
+  const ogImage = await getImage({
+    src: featuredImage,
+    width: 1200,
+    height: 630,
+    fit: 'cover',
+    format: 'webp',
+    quality: 85,
+  });
+  metaImagePath = ogImage.src;
+}
+const imageUrl = new URL(metaImagePath, seoData.mySite).toString();
 const publishedTime = post.data.date.toISOString();
 
 const articleJsonLd = {
@@ -83,7 +101,7 @@ const breadcrumbJsonLd = {
 <BaseLayout
   title={metaTitle}
   description={metaDescription}
-  image={post.data.ogImage || post.data.image}
+  image={metaImagePath}
   canonical={canonical}
   ogType="article"
   publishedTime={publishedTime}
